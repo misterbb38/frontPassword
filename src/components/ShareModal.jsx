@@ -144,7 +144,9 @@ const ShareModal = ({ password, onSave, onClose }) => {
 
     // Инициализировать выбранных пользователей
     if (password && password.sharedWith) {
-      setSelectedUsers(password.sharedWith);
+      // Assurez-vous que tous les ID sont des chaînes
+      const sharedWithIds = password.sharedWith.map((id) => String(id));
+      setSelectedUsers(sharedWithIds);
     }
   }, [password]);
 
@@ -155,7 +157,7 @@ const ShareModal = ({ password, onSave, onClose }) => {
 
       // Фильтрация, чтобы не включать владельца пароля
       const filteredUsers = res.data.filter(
-        (user) => user.id !== password.userId
+        (user) => String(user._id || user.id) !== String(password.userId)
       );
 
       setUsers(filteredUsers);
@@ -168,11 +170,14 @@ const ShareModal = ({ password, onSave, onClose }) => {
   };
 
   const handleToggleUser = (userId) => {
+    // Convertir en chaîne pour garantir la cohérence
+    const userIdStr = String(userId);
+
     setSelectedUsers((prev) => {
-      if (prev.includes(userId)) {
-        return prev.filter((id) => id !== userId);
+      if (prev.includes(userIdStr)) {
+        return prev.filter((id) => id !== userIdStr);
       } else {
-        return [...prev, userId];
+        return [...prev, userIdStr];
       }
     });
   };
@@ -205,30 +210,35 @@ const ShareModal = ({ password, onSave, onClose }) => {
           </p>
 
           <div className="mb-3">
-            {users.map((user) => (
-              <label
-                key={user.id}
-                className="checkbox-container mb-2 flex items-center"
-              >
-                <input
-                  type="checkbox"
-                  checked={selectedUsers.includes(user.id)}
-                  onChange={() => handleToggleUser(user.id)}
-                />
-                <span className="checkmark"></span>
-                <div>
-                  <strong>{user.username}</strong>
-                  <br />
-                  <small className="text-gray-600">{user.email}</small>
-                  <span
-                    className={`user-role ${user.role} ml-2`}
-                    style={{ fontSize: "0.75rem" }}
-                  >
-                    {user.role}
-                  </span>
-                </div>
-              </label>
-            ))}
+            {users.map((user) => {
+              // Utiliser _id s'il existe, sinon id, et le convertir en chaîne
+              const userId = String(user._id || user.id);
+
+              return (
+                <label
+                  key={userId}
+                  className="checkbox-container mb-2 flex items-center"
+                >
+                  <input
+                    type="checkbox"
+                    checked={selectedUsers.includes(userId)}
+                    onChange={() => handleToggleUser(userId)}
+                  />
+                  <span className="checkmark"></span>
+                  <div>
+                    <strong>{user.username}</strong>
+                    <br />
+                    <small className="text-gray-600">{user.email}</small>
+                    <span
+                      className={`user-role ${user.role} ml-2`}
+                      style={{ fontSize: "0.75rem" }}
+                    >
+                      {user.role}
+                    </span>
+                  </div>
+                </label>
+              );
+            })}
           </div>
 
           <p>
