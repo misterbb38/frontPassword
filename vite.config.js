@@ -15,5 +15,11 @@ export default defineConfig({
         secure: false
       }
     }
+  },
+  // Ajout d'une configuration de construction explicite
+  build: {
+    outDir: 'dist',
+    // Générer des fichiers source map pour faciliter le débogage
+    sourcemap: true
   }
 });
