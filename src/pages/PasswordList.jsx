@@ -145,7 +145,7 @@ const PasswordList = () => {
   //   try {
   //     if (currentPassword) {
   //       // Обновление
-  //       await api.put(`/api/passwords/${currentPassword.id}`, passwordData);
+  //       await api.put(`/api/passwords/${currentPassword._id}`, passwordData);
   //       toast.success("Пароль успешно обновлен");
   //     } else {
   //       // Добавление
@@ -163,9 +163,9 @@ const PasswordList = () => {
 
   const handleSavePassword = async (passwordData) => {
     try {
-      if (currentPassword && currentPassword.id) {
+      if (currentPassword && currentPassword._id) {
         // Обновление - vérifier que l'ID existe
-        await api.put(`/api/passwords/${currentPassword.id}`, passwordData);
+        await api.put(`/api/passwords/${currentPassword._id}`, passwordData);
         toast.success("Пароль успешно обновлен");
       } else {
         // Добавление
@@ -184,7 +184,7 @@ const PasswordList = () => {
   // Обработать общий доступ к паролю
   const handleSharePassword = async (userIds) => {
     try {
-      await api.put(`/api/passwords/${currentPassword.id}`, {
+      await api.put(`/api/passwords/${currentPassword._id}`, {
         ...currentPassword,
         sharedWith: userIds,
       });
@@ -201,7 +201,7 @@ const PasswordList = () => {
   // Обработать удаление пароля
   // const handleDeletePassword = async () => {
   //   try {
-  //     await api.delete(`/api/passwords/${currentPassword.id}`);
+  //     await api.delete(`/api/passwords/${currentPassword._id}`);
 
   //     toast.success("Пароль успешно удален");
   //     fetchPasswords();
@@ -216,13 +216,13 @@ const PasswordList = () => {
   const handleDeletePassword = async () => {
     try {
       // Vérifier que currentPassword existe et a un ID
-      if (!currentPassword || (!currentPassword.id && !currentPassword._id)) {
+      if (!currentPassword || (!currentPassword._id && !currentPassword._id)) {
         toast.error("Ошибка: ID пароля не найден");
         return;
       }
 
       // Utiliser _id si disponible, sinon id
-      const passwordId = currentPassword._id || currentPassword.id;
+      const passwordId = currentPassword._id || currentPassword._id;
 
       await api.delete(`/api/passwords/${passwordId}`);
 
@@ -265,7 +265,7 @@ const PasswordList = () => {
             <div className="text-center py-4">Загрузка...</div>
           ) : filteredPasswords.length > 0 ? (
             filteredPasswords.map((password) => (
-              <div key={password.id} className="card password-card mb-3">
+              <div key={password._id} className="card password-card mb-3">
                 <div className="card-body">
                   <div className="password-card-header mb-3">
                     <div className="password-info">
@@ -289,12 +289,14 @@ const PasswordList = () => {
                     <div className="password-actions">
                       <button
                         className="btn btn-sm btn-secondary"
-                        onClick={() => toggleShowPassword(password.id)}
+                        onClick={() => toggleShowPassword(password._id)}
                         title={
-                          showPasswordId === password.id ? "Скрыть" : "Показать"
+                          showPasswordId === password._id
+                            ? "Скрыть"
+                            : "Показать"
                         }
                       >
-                        {showPasswordId === password.id ? (
+                        {showPasswordId === password._id ? (
                           <FaEyeSlash />
                         ) : (
                           <FaEye />
@@ -335,7 +337,7 @@ const PasswordList = () => {
                     <div className="password-field-label">Пароль:</div>
                     <div
                       className={`password-field-value ${
-                        showPasswordId !== password.id ? "password-hidden" : ""
+                        showPasswordId !== password._id ? "password-hidden" : ""
                       }`}
                     >
                       {password.password}
@@ -353,7 +355,7 @@ const PasswordList = () => {
 
                   <div className="mt-2">
                     <small className="text-gray-500">
-                      {password.userId === user.id
+                      {password.userId === user._id
                         ? "Вы владелец"
                         : "Доступно вам"}
                       {password.sharedWith &&

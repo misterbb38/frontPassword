@@ -25,7 +25,7 @@
 
 //       // Фильтрация, чтобы не включать владельца пароля
 //       const filteredUsers = res.data.filter(
-//         (user) => user.id !== password.userId
+//         (user) => user._id !== password.userId
 //       );
 
 //       setUsers(filteredUsers);
@@ -77,13 +77,13 @@
 //           <div className="mb-3">
 //             {users.map((user) => (
 //               <label
-//                 key={user.id}
+//                 key={user._id}
 //                 className="checkbox-container mb-2 flex items-center"
 //               >
 //                 <input
 //                   type="checkbox"
-//                   checked={selectedUsers.includes(user.id)}
-//                   onChange={() => handleToggleUser(user.id)}
+//                   checked={selectedUsers.includes(user._id)}
+//                   onChange={() => handleToggleUser(user._id)}
 //                 />
 //                 <span className="checkmark"></span>
 //                 <div>
@@ -157,7 +157,7 @@ const ShareModal = ({ password, onSave, onClose }) => {
 
       // Фильтрация, чтобы не включать владельца пароля
       const filteredUsers = res.data.filter(
-        (user) => String(user._id || user.id) !== String(password.userId)
+        (user) => String(user._id || user._id) !== String(password.userId)
       );
 
       setUsers(filteredUsers);
@@ -212,7 +212,7 @@ const ShareModal = ({ password, onSave, onClose }) => {
           <div className="mb-3">
             {users.map((user) => {
               // Utiliser _id s'il existe, sinon id, et le convertir en chaîne
-              const userId = String(user._id || user.id);
+              const userId = String(user._id || user._id);
 
               return (
                 <label

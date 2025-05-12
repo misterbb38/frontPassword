@@ -129,7 +129,7 @@
 //                 </thead>
 //                 <tbody>
 //                   {stats.recentPasswords.map((password) => (
-//                     <tr key={password.id}>
+//                     <tr key={password._id}>
 //                       <td>{password.title}</td>
 //                       <td>{password.username}</td>
 //                       <td>
@@ -288,7 +288,7 @@ const Dashboard = () => {
                 </thead>
                 <tbody>
                   {stats.recentPasswords.map((password) => (
-                    <tr key={password.id}>
+                    <tr key={password._id}>
                       <td>{password.title}</td>
                       <td>{password.username}</td>
                       <td>

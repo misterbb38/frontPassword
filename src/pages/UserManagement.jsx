@@ -68,7 +68,7 @@
 //     try {
 //       if (currentUser) {
 //         // Обновление
-//         await axios.put(`/api/users/${currentUser.id}`, userData);
+//         await axios.put(`/api/users/${currentUser._id}`, userData);
 //         toast.success("Пользователь успешно обновлен");
 //       } else {
 //         // Добавление
@@ -91,7 +91,7 @@
 //   // Обработать удаление пользователя
 //   const handleDeleteUser = async () => {
 //     try {
-//       await axios.delete(`/api/users/${currentUser.id}`);
+//       await axios.delete(`/api/users/${currentUser._id}`);
 
 //       toast.success("Пользователь успешно удален");
 //       fetchUsers();
@@ -151,7 +151,7 @@
 //                 </thead>
 //                 <tbody>
 //                   {filteredUsers.map((user) => (
-//                     <tr key={user.id}>
+//                     <tr key={user._id}>
 //                       <td>{user.username}</td>
 //                       <td>{user.email}</td>
 //                       <td>
@@ -181,7 +181,7 @@
 //                             className="btn btn-sm btn-danger"
 //                             onClick={() => openDeleteModal(user)}
 //                             title="Удалить"
-//                             disabled={user.id === authUser.id} // Запретить удаление самого себя
+//                             disabled={user._id === authUser._id} // Запретить удаление самого себя
 //                           >
 //                             <FaTrash />
 //                           </button>
@@ -295,7 +295,7 @@ const UserManagement = () => {
     try {
       if (currentUser) {
         // Обновление
-        await api.put(`/api/users/${currentUser.id}`, userData);
+        await api.put(`/api/users/${currentUser._id}`, userData);
         toast.success("Пользователь успешно обновлен");
       } else {
         // Добавление
@@ -318,7 +318,7 @@ const UserManagement = () => {
   // Обработать удаление пользователя
   const handleDeleteUser = async () => {
     try {
-      await api.delete(`/api/users/${currentUser.id}`);
+      await api.delete(`/api/users/${currentUser._id}`);
 
       toast.success("Пользователь успешно удален");
       fetchUsers();
@@ -378,7 +378,7 @@ const UserManagement = () => {
                 </thead>
                 <tbody>
                   {filteredUsers.map((user) => (
-                    <tr key={user.id}>
+                    <tr key={user._id}>
                       <td>{user.username}</td>
                       <td>{user.email}</td>
                       <td>
@@ -408,7 +408,7 @@ const UserManagement = () => {
                             className="btn btn-sm btn-danger"
                             onClick={() => openDeleteModal(user)}
                             title="Удалить"
-                            disabled={user.id === authUser.id} // Запретить удаление самого себя
+                            disabled={user._id === authUser._id} // Запретить удаление самого себя
                           >
                             <FaTrash />
                           </button>
