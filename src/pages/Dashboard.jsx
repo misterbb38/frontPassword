@@ -1,6 +1,6 @@
 // import React, { useState, useEffect } from "react";
 // import { Link } from "react-router-dom";
-// import axios from "axios";
+// import api from "../utils/api";
 // import { FaKey, FaUsers, FaPlusCircle, FaLock } from "react-icons/fa";
 // import { useAuth } from "../context/AuthContext";
 
@@ -16,7 +16,7 @@
 //   useEffect(() => {
 //     const fetchStats = async () => {
 //       try {
-//         // Récupérer les statistiques
+//         // Получить статистику
 //         const passwordsRes = await axios.get("/api/passwords");
 
 //         let usersCount = 0;
@@ -25,7 +25,7 @@
 //           usersCount = usersRes.data.length;
 //         }
 
-//         // Trier les mots de passe par date de création (du plus récent au plus ancien)
+//         // Сортировка паролей по дате создания (от новых к старым)
 //         const sortedPasswords = [...passwordsRes.data].sort(
 //           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
 //         );
@@ -36,10 +36,7 @@
 //           recentPasswords: sortedPasswords.slice(0, 5),
 //         });
 //       } catch (error) {
-//         console.error(
-//           "Erreur lors de la récupération des statistiques:",
-//           error
-//         );
+//         console.error("Ошибка при получении статистики:", error);
 //       } finally {
 //         setLoading(false);
 //       }
@@ -49,20 +46,20 @@
 //   }, [isAdmin]);
 
 //   if (loading) {
-//     return <div>Chargement des statistiques...</div>;
+//     return <div>Загрузка статистики...</div>;
 //   }
 
 //   return (
 //     <div>
 //       <header>
-//         <h1>Tableau de bord</h1>
-//         <p className="subtitle">Bienvenue, {user?.username}!</p>
+//         <h1>Панель управления</h1>
+//         <p className="subtitle">Добро пожаловать, {user?.username}!</p>
 //       </header>
 
 //       <div className="flex gap-2" style={{ flexWrap: "wrap" }}>
 //         <div className="card" style={{ flex: "1", minWidth: "250px" }}>
 //           <div className="card-header">
-//             <h2>Vos mots de passe</h2>
+//             <h2>Ваши пароли</h2>
 //           </div>
 //           <div className="card-body">
 //             <div className="flex items-center justify-between mb-4">
@@ -76,12 +73,12 @@
 //                 >
 //                   {stats.totalPasswords}
 //                 </h3>
-//                 <p>Mots de passe enregistrés</p>
+//                 <p>Сохраненные пароли</p>
 //               </div>
 //               <FaKey size={40} color="var(--primary-color)" />
 //             </div>
 //             <Link to="/passwords" className="btn btn-primary">
-//               Gérer les mots de passe
+//               Управление паролями
 //             </Link>
 //           </div>
 //         </div>
@@ -89,7 +86,7 @@
 //         {isAdmin && (
 //           <div className="card" style={{ flex: "1", minWidth: "250px" }}>
 //             <div className="card-header">
-//               <h2>Utilisateurs</h2>
+//               <h2>Пользователи</h2>
 //             </div>
 //             <div className="card-body">
 //               <div className="flex items-center justify-between mb-4">
@@ -103,12 +100,12 @@
 //                   >
 //                     {stats.totalUsers}
 //                   </h3>
-//                   <p>Utilisateurs enregistrés</p>
+//                   <p>Зарегистрированные пользователи</p>
 //                 </div>
 //                 <FaUsers size={40} color="var(--primary-color)" />
 //               </div>
 //               <Link to="/users" className="btn btn-primary">
-//                 Gérer les utilisateurs
+//                 Управление пользователями
 //               </Link>
 //             </div>
 //           </div>
@@ -117,7 +114,7 @@
 
 //       <div className="card mt-4">
 //         <div className="card-header">
-//           <h2>Mots de passe récents</h2>
+//           <h2>Недавние пароли</h2>
 //         </div>
 //         <div className="card-body">
 //           {stats.recentPasswords.length > 0 ? (
@@ -125,9 +122,9 @@
 //               <table>
 //                 <thead>
 //                   <tr>
-//                     <th>Titre</th>
-//                     <th>Nom d'utilisateur</th>
-//                     <th>Date de création</th>
+//                     <th>Название</th>
+//                     <th>Имя пользователя</th>
+//                     <th>Дата создания</th>
 //                   </tr>
 //                 </thead>
 //                 <tbody>
@@ -146,9 +143,9 @@
 //           ) : (
 //             <div className="text-center py-4">
 //               <FaLock size={40} color="#ccc" />
-//               <p className="mt-2">Aucun mot de passe enregistré</p>
+//               <p className="mt-2">Нет сохраненных паролей</p>
 //               <Link to="/passwords" className="btn btn-primary mt-2">
-//                 <FaPlusCircle /> Ajouter un mot de passe
+//                 <FaPlusCircle /> Добавить пароль
 //               </Link>
 //             </div>
 //           )}
@@ -162,7 +159,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import api from "../utils/api";
 import { FaKey, FaUsers, FaPlusCircle, FaLock } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
 
@@ -179,11 +176,11 @@ const Dashboard = () => {
     const fetchStats = async () => {
       try {
         // Получить статистику
-        const passwordsRes = await axios.get("/api/passwords");
+        const passwordsRes = await api.get("/api/passwords");
 
         let usersCount = 0;
         if (isAdmin) {
-          const usersRes = await axios.get("/api/users");
+          const usersRes = await api.get("/api/users");
           usersCount = usersRes.data.length;
         }
 

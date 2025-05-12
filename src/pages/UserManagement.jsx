@@ -1,10 +1,10 @@
 // import React, { useState, useEffect } from "react";
-// import axios from "axios";
+// import api from "../utils/api";
 // import { toast } from "react-toastify";
 // import { FaPlus, FaEdit, FaTrash, FaUserShield, FaUser } from "react-icons/fa";
 // import { useAuth } from "../context/AuthContext";
 
-// // Composants
+// // Компоненты
 // import UserModal from "../components/UserModal";
 // import ConfirmModal from "../components/ConfirmModal";
 
@@ -14,7 +14,7 @@
 //   const [loading, setLoading] = useState(true);
 //   const [search, setSearch] = useState("");
 
-//   // États pour les modales
+//   // Состояния для модальных окон
 //   const [modalOpen, setModalOpen] = useState(false);
 //   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
 //   const [currentUser, setCurrentUser] = useState(null);
@@ -23,21 +23,21 @@
 //     fetchUsers();
 //   }, []);
 
-//   // Récupérer tous les utilisateurs
+//   // Получить всех пользователей
 //   const fetchUsers = async () => {
 //     try {
 //       setLoading(true);
 //       const res = await axios.get("/api/users");
 //       setUsers(res.data);
 //     } catch (error) {
-//       toast.error("Erreur lors de la récupération des utilisateurs");
+//       toast.error("Ошибка при получении списка пользователей");
 //       console.error(error);
 //     } finally {
 //       setLoading(false);
 //     }
 //   };
 
-//   // Filtrer les utilisateurs en fonction de la recherche
+//   // Фильтровать пользователей в соответствии с поиском
 //   const filteredUsers = users.filter(
 //     (user) =>
 //       user.username.toLowerCase().includes(search.toLowerCase()) ||
@@ -45,41 +45,41 @@
 //       user.role.toLowerCase().includes(search.toLowerCase())
 //   );
 
-//   // Ouvrir la modale pour ajouter un utilisateur
+//   // Открыть модальное окно для добавления пользователя
 //   const openAddModal = () => {
 //     setCurrentUser(null);
 //     setModalOpen(true);
 //   };
 
-//   // Ouvrir la modale pour éditer un utilisateur
+//   // Открыть модальное окно для редактирования пользователя
 //   const openEditModal = (user) => {
 //     setCurrentUser(user);
 //     setModalOpen(true);
 //   };
 
-//   // Ouvrir la modale de confirmation pour supprimer un utilisateur
+//   // Открыть модальное окно подтверждения для удаления пользователя
 //   const openDeleteModal = (user) => {
 //     setCurrentUser(user);
 //     setConfirmModalOpen(true);
 //   };
 
-//   // Gérer l'ajout ou la modification d'un utilisateur
+//   // Обработать добавление или изменение пользователя
 //   const handleSaveUser = async (userData) => {
 //     try {
 //       if (currentUser) {
-//         // Mise à jour
+//         // Обновление
 //         await axios.put(`/api/users/${currentUser.id}`, userData);
-//         toast.success("Utilisateur mis à jour avec succès");
+//         toast.success("Пользователь успешно обновлен");
 //       } else {
-//         // Ajout
+//         // Добавление
 //         await axios.post("/api/users", userData);
-//         toast.success("Utilisateur ajouté avec succès");
+//         toast.success("Пользователь успешно добавлен");
 //       }
 
 //       fetchUsers();
 //       setModalOpen(false);
 //     } catch (error) {
-//       let errorMessage = "Erreur lors de l'enregistrement de l'utilisateur";
+//       let errorMessage = "Ошибка при сохранении пользователя";
 //       if (error.response && error.response.data && error.response.data.msg) {
 //         errorMessage = error.response.data.msg;
 //       }
@@ -88,16 +88,16 @@
 //     }
 //   };
 
-//   // Gérer la suppression d'un utilisateur
+//   // Обработать удаление пользователя
 //   const handleDeleteUser = async () => {
 //     try {
 //       await axios.delete(`/api/users/${currentUser.id}`);
 
-//       toast.success("Utilisateur supprimé avec succès");
+//       toast.success("Пользователь успешно удален");
 //       fetchUsers();
 //       setConfirmModalOpen(false);
 //     } catch (error) {
-//       let errorMessage = "Erreur lors de la suppression de l'utilisateur";
+//       let errorMessage = "Ошибка при удалении пользователя";
 //       if (error.response && error.response.data && error.response.data.msg) {
 //         errorMessage = error.response.data.msg;
 //       }
@@ -110,25 +110,25 @@
 //     <div>
 //       <div className="user-list-header">
 //         <div>
-//           <h1>Gestion des utilisateurs</h1>
+//           <h1>Управление пользователями</h1>
 //           <p className="subtitle">
-//             Gérez les utilisateurs du gestionnaire de mots de passe
+//             Управляйте пользователями менеджера паролей
 //           </p>
 //         </div>
 //         <button className="btn btn-primary" onClick={openAddModal}>
-//           <FaPlus /> Ajouter un utilisateur
+//           <FaPlus /> Добавить пользователя
 //         </button>
 //       </div>
 
 //       <div className="card">
 //         <div className="card-header">
-//           <h2>Liste des utilisateurs</h2>
+//           <h2>Список пользователей</h2>
 //         </div>
 //         <div className="card-body">
 //           <div className="form-group">
 //             <input
 //               type="text"
-//               placeholder="Rechercher un utilisateur..."
+//               placeholder="Поиск пользователя..."
 //               value={search}
 //               onChange={(e) => setSearch(e.target.value)}
 //               className="w-full"
@@ -136,17 +136,17 @@
 //           </div>
 
 //           {loading ? (
-//             <div className="text-center py-4">Chargement...</div>
+//             <div className="text-center py-4">Загрузка...</div>
 //           ) : filteredUsers.length > 0 ? (
 //             <div className="table-container">
 //               <table>
 //                 <thead>
 //                   <tr>
-//                     <th>Nom d'utilisateur</th>
+//                     <th>Имя пользователя</th>
 //                     <th>Email</th>
-//                     <th>Rôle</th>
-//                     <th>Date de création</th>
-//                     <th>Actions</th>
+//                     <th>Роль</th>
+//                     <th>Дата создания</th>
+//                     <th>Действия</th>
 //                   </tr>
 //                 </thead>
 //                 <tbody>
@@ -158,11 +158,11 @@
 //                         <span className={`user-role ${user.role}`}>
 //                           {user.role === "admin" ? (
 //                             <>
-//                               <FaUserShield /> Admin
+//                               <FaUserShield /> Администратор
 //                             </>
 //                           ) : (
 //                             <>
-//                               <FaUser /> Utilisateur
+//                               <FaUser /> Пользователь
 //                             </>
 //                           )}
 //                         </span>
@@ -173,15 +173,15 @@
 //                           <button
 //                             className="btn btn-sm btn-secondary"
 //                             onClick={() => openEditModal(user)}
-//                             title="Modifier"
+//                             title="Изменить"
 //                           >
 //                             <FaEdit />
 //                           </button>
 //                           <button
 //                             className="btn btn-sm btn-danger"
 //                             onClick={() => openDeleteModal(user)}
-//                             title="Supprimer"
-//                             disabled={user.id === authUser.id} // Empêcher de se supprimer soi-même
+//                             title="Удалить"
+//                             disabled={user.id === authUser.id} // Запретить удаление самого себя
 //                           >
 //                             <FaTrash />
 //                           </button>
@@ -194,13 +194,13 @@
 //             </div>
 //           ) : (
 //             <div className="text-center py-4">
-//               <p>Aucun utilisateur trouvé</p>
+//               <p>Пользователи не найдены</p>
 //             </div>
 //           )}
 //         </div>
 //       </div>
 
-//       {/* Modale d'ajout/édition d'utilisateur */}
+//       {/* Модальное окно добавления/редактирования пользователя */}
 //       {modalOpen && (
 //         <UserModal
 //           user={currentUser}
@@ -209,12 +209,12 @@
 //         />
 //       )}
 
-//       {/* Modale de confirmation de suppression */}
+//       {/* Модальное окно подтверждения удаления */}
 //       {confirmModalOpen && (
 //         <ConfirmModal
-//           title="Supprimer l'utilisateur"
-//           message={`Êtes-vous sûr de vouloir supprimer l'utilisateur "${currentUser?.username}" ?`}
-//           confirmLabel="Supprimer"
+//           title="Удалить пользователя"
+//           message={`Вы уверены, что хотите удалить пользователя "${currentUser?.username}"?`}
+//           confirmLabel="Удалить"
 //           onConfirm={handleDeleteUser}
 //           onCancel={() => setConfirmModalOpen(false)}
 //         />
@@ -226,7 +226,7 @@
 // export default UserManagement;
 
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../utils/api";
 import { toast } from "react-toastify";
 import { FaPlus, FaEdit, FaTrash, FaUserShield, FaUser } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
@@ -254,7 +254,7 @@ const UserManagement = () => {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("/api/users");
+      const res = await api.get("/api/users");
       setUsers(res.data);
     } catch (error) {
       toast.error("Ошибка при получении списка пользователей");
@@ -295,11 +295,11 @@ const UserManagement = () => {
     try {
       if (currentUser) {
         // Обновление
-        await axios.put(`/api/users/${currentUser.id}`, userData);
+        await api.put(`/api/users/${currentUser.id}`, userData);
         toast.success("Пользователь успешно обновлен");
       } else {
         // Добавление
-        await axios.post("/api/users", userData);
+        await api.post("/api/users", userData);
         toast.success("Пользователь успешно добавлен");
       }
 
@@ -318,7 +318,7 @@ const UserManagement = () => {
   // Обработать удаление пользователя
   const handleDeleteUser = async () => {
     try {
-      await axios.delete(`/api/users/${currentUser.id}`);
+      await api.delete(`/api/users/${currentUser.id}`);
 
       toast.success("Пользователь успешно удален");
       fetchUsers();

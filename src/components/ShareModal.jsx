@@ -1,5 +1,5 @@
 // import React, { useState, useEffect } from "react";
-// import axios from "axios";
+// import api from "../utils/api";
 // import Modal from "./Modal";
 // import { FaShare, FaSave, FaUserPlus } from "react-icons/fa";
 // import { toast } from "react-toastify";
@@ -12,7 +12,7 @@
 //   useEffect(() => {
 //     fetchUsers();
 
-//     // Initialiser les utilisateurs sélectionnés
+//     // Инициализировать выбранных пользователей
 //     if (password && password.sharedWith) {
 //       setSelectedUsers(password.sharedWith);
 //     }
@@ -23,14 +23,14 @@
 //       setLoading(true);
 //       const res = await axios.get("/api/users");
 
-//       // Filtrer pour ne pas inclure l'utilisateur propriétaire du mot de passe
+//       // Фильтрация, чтобы не включать владельца пароля
 //       const filteredUsers = res.data.filter(
 //         (user) => user.id !== password.userId
 //       );
 
 //       setUsers(filteredUsers);
 //     } catch (error) {
-//       toast.error("Erreur lors de la récupération des utilisateurs");
+//       toast.error("Ошибка при получении списка пользователей");
 //       console.error(error);
 //     } finally {
 //       setLoading(false);
@@ -53,25 +53,25 @@
 
 //   return (
 //     <Modal
-//       title={`Partager "${password?.title}"`}
+//       title={`Поделиться "${password?.title}"`}
 //       onClose={onClose}
 //       footer={
 //         <>
 //           <button className="btn btn-secondary" onClick={onClose}>
-//             Annuler
+//             Отмена
 //           </button>
 //           <button className="btn btn-primary" onClick={handleSubmit}>
-//             <FaSave /> Enregistrer le partage
+//             <FaSave /> Сохранить общий доступ
 //           </button>
 //         </>
 //       }
 //     >
 //       {loading ? (
-//         <div className="text-center py-4">Chargement des utilisateurs...</div>
+//         <div className="text-center py-4">Загрузка пользователей...</div>
 //       ) : users.length > 0 ? (
 //         <div>
 //           <p className="mb-3">
-//             Sélectionnez les utilisateurs avec qui partager ce mot de passe :
+//             Выберите пользователей, с которыми хотите поделиться этим паролем:
 //           </p>
 
 //           <div className="mb-3">
@@ -104,18 +104,20 @@
 //           <p>
 //             <small className="text-gray-600">
 //               {selectedUsers.length === 0
-//                 ? "Ce mot de passe ne sera pas partagé."
-//                 : `Ce mot de passe sera partagé avec ${selectedUsers.length} utilisateur(s).`}
+//                 ? "Этот пароль не будет доступен другим пользователям."
+//                 : `Этот пароль будет доступен ${selectedUsers.length} пользователям.`}
 //             </small>
 //           </p>
 //         </div>
 //       ) : (
 //         <div className="text-center py-4">
-//           <p>Aucun autre utilisateur trouvé pour partager ce mot de passe.</p>
+//           <p>
+//             Не найдено других пользователей для предоставления доступа к паролю.
+//           </p>
 //           <p className="mt-2">
 //             <small className="text-gray-600">
-//               Un administrateur doit créer d'autres comptes utilisateurs pour
-//               pouvoir partager des mots de passe.
+//               Администратор должен создать другие учетные записи пользователей,
+//               чтобы была возможность делиться паролями.
 //             </small>
 //           </p>
 //         </div>
@@ -127,7 +129,7 @@
 // export default ShareModal;
 
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../utils/api";
 import Modal from "./Modal";
 import { FaShare, FaSave, FaUserPlus } from "react-icons/fa";
 import { toast } from "react-toastify";
@@ -149,7 +151,7 @@ const ShareModal = ({ password, onSave, onClose }) => {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("/api/users");
+      const res = await api.get("/api/users");
 
       // Фильтрация, чтобы не включать владельца пароля
       const filteredUsers = res.data.filter(
