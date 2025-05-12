@@ -199,9 +199,32 @@ const PasswordList = () => {
   };
 
   // Обработать удаление пароля
+  // const handleDeletePassword = async () => {
+  //   try {
+  //     await api.delete(`/api/passwords/${currentPassword.id}`);
+
+  //     toast.success("Пароль успешно удален");
+  //     fetchPasswords();
+  //     setConfirmModalOpen(false);
+  //   } catch (error) {
+  //     toast.error("Ошибка при удалении пароля");
+  //     console.error(error);
+  //   }
+  // };
+
+  // Обработать удаление пароля
   const handleDeletePassword = async () => {
     try {
-      await api.delete(`/api/passwords/${currentPassword.id}`);
+      // Vérifier que currentPassword existe et a un ID
+      if (!currentPassword || (!currentPassword.id && !currentPassword._id)) {
+        toast.error("Ошибка: ID пароля не найден");
+        return;
+      }
+
+      // Utiliser _id si disponible, sinon id
+      const passwordId = currentPassword._id || currentPassword.id;
+
+      await api.delete(`/api/passwords/${passwordId}`);
 
       toast.success("Пароль успешно удален");
       fetchPasswords();
@@ -211,7 +234,6 @@ const PasswordList = () => {
       console.error(error);
     }
   };
-
   return (
     <div>
       <div className="password-list-header">
