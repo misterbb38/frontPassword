@@ -141,10 +141,30 @@ const PasswordList = () => {
   };
 
   // Обработать добавление или изменение пароля
+  // const handleSavePassword = async (passwordData) => {
+  //   try {
+  //     if (currentPassword) {
+  //       // Обновление
+  //       await api.put(`/api/passwords/${currentPassword.id}`, passwordData);
+  //       toast.success("Пароль успешно обновлен");
+  //     } else {
+  //       // Добавление
+  //       await api.post("/api/passwords", passwordData);
+  //       toast.success("Пароль успешно добавлен");
+  //     }
+
+  //     fetchPasswords();
+  //     setModalOpen(false);
+  //   } catch (error) {
+  //     toast.error("Ошибка при сохранении пароля");
+  //     console.error(error);
+  //   }
+  // };
+
   const handleSavePassword = async (passwordData) => {
     try {
-      if (currentPassword) {
-        // Обновление
+      if (currentPassword && currentPassword.id) {
+        // Обновление - vérifier que l'ID existe
         await api.put(`/api/passwords/${currentPassword.id}`, passwordData);
         toast.success("Пароль успешно обновлен");
       } else {
