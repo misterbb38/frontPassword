@@ -9,7 +9,7 @@ export default defineConfig({
     host: '0.0.0.0', // Pour rendre l'application accessible sur le réseau
     proxy: {
       '/api': {
-        //target: 'http://localhost:5001',
+        //target: 'http://localhost:5007',
         target: 'https://serverpassword.onrender.com',
         changeOrigin: true,
         secure: false

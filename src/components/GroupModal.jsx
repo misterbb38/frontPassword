@@ -16,24 +16,24 @@
 //   const [users, setUsers] = useState([]);
 //   const [loading, setLoading] = useState(false);
 
-//   // Couleurs prédéfinies pour les groupes
+//   // Предопределенные цвета для групп
 //   const predefinedColors = [
-//     { name: "Bleu", value: "#3B82F6" },
-//     { name: "Vert", value: "#10B981" },
-//     { name: "Rouge", value: "#EF4444" },
-//     { name: "Orange", value: "#F59E0B" },
-//     { name: "Violet", value: "#8B5CF6" },
-//     { name: "Rose", value: "#EC4899" },
-//     { name: "Indigo", value: "#6366F1" },
-//     { name: "Gris", value: "#6B7280" },
+//     { name: "Синий", value: "#3B82F6" },
+//     { name: "Зеленый", value: "#10B981" },
+//     { name: "Красный", value: "#EF4444" },
+//     { name: "Оранжевый", value: "#F59E0B" },
+//     { name: "Фиолетовый", value: "#8B5CF6" },
+//     { name: "Розовый", value: "#EC4899" },
+//     { name: "Индиго", value: "#6366F1" },
+//     { name: "Серый", value: "#6B7280" },
 //   ];
 
-//   // Charger les utilisateurs pour le partage
+//   // Загрузить пользователей для совместного доступа
 //   useEffect(() => {
 //     fetchUsers();
 //   }, []);
 
-//   // Préremplir le formulaire si on modifie un groupe existant
+//   // Заполнить форму при редактировании существующей группы
 //   useEffect(() => {
 //     if (group) {
 //       setFormData({
@@ -50,7 +50,7 @@
 //       const res = await api.get("/api/users");
 //       setUsers(res.data);
 //     } catch (error) {
-//       console.error("Erreur lors du chargement des utilisateurs:", error);
+//       console.error("Ошибка при загрузке пользователей:", error);
 //     }
 //   };
 
@@ -61,7 +61,7 @@
 //       [name]: value,
 //     });
 
-//     // Effacer l'erreur quand l'utilisateur modifie le champ
+//     // Очистить ошибку когда пользователь изменяет поле
 //     if (errors[name]) {
 //       setErrors({
 //         ...errors,
@@ -84,7 +84,7 @@
 //     const newErrors = {};
 
 //     if (!formData.name.trim()) {
-//       newErrors.name = "Le nom du groupe est requis";
+//       newErrors.name = "Название группы обязательно";
 //     }
 
 //     setErrors(newErrors);
@@ -99,7 +99,7 @@
 //       try {
 //         await onSave(formData);
 //       } catch (error) {
-//         toast.error("Erreur lors de la sauvegarde du groupe");
+//         toast.error("Ошибка при сохранении группы");
 //       } finally {
 //         setLoading(false);
 //       }
@@ -108,7 +108,7 @@
 
 //   return (
 //     <Modal
-//       title={group ? "Modifier le groupe" : "Créer un nouveau groupe"}
+//       title={group ? "Изменить группу" : "Создать новую группу"}
 //       onClose={onClose}
 //       footer={
 //         <>
@@ -117,7 +117,7 @@
 //             onClick={onClose}
 //             disabled={loading}
 //           >
-//             Annuler
+//             Отмена
 //           </button>
 //           <button
 //             className="btn btn-primary"
@@ -125,41 +125,41 @@
 //             disabled={loading}
 //           >
 //             <FaSave />{" "}
-//             {loading ? "Sauvegarde..." : group ? "Sauvegarder" : "Créer"}
+//             {loading ? "Сохранение..." : group ? "Сохранить" : "Создать"}
 //           </button>
 //         </>
 //       }
 //     >
 //       <form onSubmit={handleSubmit}>
 //         <div className="form-group">
-//           <label htmlFor="name">Nom du groupe *</label>
+//           <label htmlFor="name">Название группы *</label>
 //           <input
 //             type="text"
 //             id="name"
 //             name="name"
 //             value={formData.name}
 //             onChange={handleChange}
-//             placeholder="Ex: Réseaux sociaux, Banques, Travail..."
+//             placeholder="Напр: Социальные сети, Банки, Работа..."
 //             disabled={loading}
 //           />
 //           {errors.name && <small className="text-danger">{errors.name}</small>}
 //         </div>
 
 //         <div className="form-group">
-//           <label htmlFor="description">Description</label>
+//           <label htmlFor="description">Описание</label>
 //           <textarea
 //             id="description"
 //             name="description"
 //             value={formData.description}
 //             onChange={handleChange}
-//             placeholder="Description optionnelle du groupe"
+//             placeholder="Необязательное описание группы"
 //             rows="3"
 //             disabled={loading}
 //           />
 //         </div>
 
 //         <div className="form-group">
-//           <label htmlFor="color">Couleur du groupe</label>
+//           <label htmlFor="color">Цвет группы</label>
 //           <div className="flex gap-2 mb-2" style={{ flexWrap: "wrap" }}>
 //             {predefinedColors.map((color) => (
 //               <button
@@ -196,7 +196,7 @@
 //         </div>
 
 //         <div className="form-group">
-//           <label>Partager avec les utilisateurs</label>
+//           <label>Поделиться с пользователями</label>
 //           <div style={{ maxHeight: "200px", overflowY: "auto" }}>
 //             {users.length > 0 ? (
 //               users.map((user) => {
@@ -233,14 +233,14 @@
 //               })
 //             ) : (
 //               <p style={{ color: "#6c757d" }}>
-//                 Aucun utilisateur disponible pour le partage
+//                 Нет доступных пользователей для совместного доступа
 //               </p>
 //             )}
 //           </div>
 //           <small style={{ color: "#6c757d" }}>
 //             {formData.sharedWith.length === 0
-//               ? "Ce groupe ne sera pas partagé"
-//               : `Partagé avec ${formData.sharedWith.length} utilisateur(s)`}
+//               ? "Эта группа не будет открыта для совместного доступа"
+//               : `Открыто для ${formData.sharedWith.length} пользователя(ей)`}
 //           </small>
 //         </div>
 //       </form>
@@ -250,12 +250,11 @@
 
 // export default GroupModal;
 
-// src/components/GroupModal.jsx
 import React, { useState, useEffect } from "react";
 import Modal from "./Modal";
-import { FaUsers, FaSave } from "react-icons/fa";
 import api from "../utils/api";
 import { toast } from "react-toastify";
+import { FaSave } from "react-icons/fa";
 
 const GroupModal = ({ group, onSave, onClose }) => {
   const [formData, setFormData] = useState({
@@ -268,7 +267,6 @@ const GroupModal = ({ group, onSave, onClose }) => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Предопределенные цвета для групп
   const predefinedColors = [
     { name: "Синий", value: "#3B82F6" },
     { name: "Зеленый", value: "#10B981" },
@@ -280,12 +278,18 @@ const GroupModal = ({ group, onSave, onClose }) => {
     { name: "Серый", value: "#6B7280" },
   ];
 
-  // Загрузить пользователей для совместного доступа
   useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await api.get("/api/users");
+        setUsers(res.data);
+      } catch (error) {
+        console.error("Ошибка при загрузке пользователей:", error);
+      }
+    };
     fetchUsers();
   }, []);
 
-  // Заполнить форму при редактировании существующей группы
   useEffect(() => {
     if (group) {
       setFormData({
@@ -297,28 +301,11 @@ const GroupModal = ({ group, onSave, onClose }) => {
     }
   }, [group]);
 
-  const fetchUsers = async () => {
-    try {
-      const res = await api.get("/api/users");
-      setUsers(res.data);
-    } catch (error) {
-      console.error("Ошибка при загрузке пользователей:", error);
-    }
-  };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-
-    // Очистить ошибку когда пользователь изменяет поле
+    setFormData({ ...formData, [name]: value });
     if (errors[name]) {
-      setErrors({
-        ...errors,
-        [name]: null,
-      });
+      setErrors({ ...errors, [name]: null });
     }
   };
 
@@ -334,18 +321,15 @@ const GroupModal = ({ group, onSave, onClose }) => {
 
   const validateForm = () => {
     const newErrors = {};
-
     if (!formData.name.trim()) {
       newErrors.name = "Название группы обязательно";
     }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (validateForm()) {
       setLoading(true);
       try {
@@ -411,43 +395,6 @@ const GroupModal = ({ group, onSave, onClose }) => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="color">Цвет группы</label>
-          <div className="flex gap-2 mb-2" style={{ flexWrap: "wrap" }}>
-            {predefinedColors.map((color) => (
-              <button
-                key={color.value}
-                type="button"
-                className={`color-option ${
-                  formData.color === color.value ? "selected" : ""
-                }`}
-                style={{
-                  backgroundColor: color.value,
-                  width: "40px",
-                  height: "40px",
-                  border:
-                    formData.color === color.value
-                      ? "3px solid #000"
-                      : "1px solid #ccc",
-                  borderRadius: "8px",
-                  cursor: "pointer",
-                }}
-                onClick={() => setFormData({ ...formData, color: color.value })}
-                title={color.name}
-                disabled={loading}
-              />
-            ))}
-          </div>
-          <input
-            type="color"
-            id="color"
-            name="color"
-            value={formData.color}
-            onChange={handleChange}
-            disabled={loading}
-          />
-        </div>
-
-        <div className="form-group">
           <label>Поделиться с пользователями</label>
           <div style={{ maxHeight: "200px", overflowY: "auto" }}>
             {users.length > 0 ? (
@@ -461,6 +408,7 @@ const GroupModal = ({ group, onSave, onClose }) => {
                       display: "flex",
                       alignItems: "center",
                       gap: "10px",
+                      cursor: "pointer",
                     }}
                   >
                     <input

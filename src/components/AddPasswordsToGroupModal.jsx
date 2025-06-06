@@ -19,7 +19,7 @@
 //         const res = await api.get("/api/passwords/ungrouped");
 //         setUngroupedPasswords(res.data);
 //       } catch (error) {
-//         toast.error("Erreur lors du chargement des mots de passe.");
+//         toast.error("Ошибка при загрузке паролей.");
 //       } finally {
 //         setLoading(false);
 //       }
@@ -46,7 +46,7 @@
 
 //   const handleSubmit = async () => {
 //     if (selectedPasswordIds.length === 0) {
-//       toast.info("Veuillez sélectionner au moins un mot de passe.");
+//       toast.info("Пожалуйста, выберите хотя бы один пароль.");
 //       return;
 //     }
 //     setSaving(true);
@@ -54,12 +54,10 @@
 //       await api.put(`/api/groups/${groupId}/add-passwords`, {
 //         passwordIds: selectedPasswordIds,
 //       });
-//       toast.success(
-//         `${selectedPasswordIds.length} mot(s) de passe ajouté(s) !`
-//       );
+//       toast.success(`${selectedPasswordIds.length} пароль(ей) добавлено!`);
 //       onSave();
 //     } catch (error) {
-//       toast.error("Erreur lors de l'ajout des mots de passe.");
+//       toast.error("Ошибка при добавлении паролей.");
 //     } finally {
 //       setSaving(false);
 //     }
@@ -67,7 +65,7 @@
 
 //   return (
 //     <Modal
-//       title="Ajouter des mots de passe au groupe"
+//       title="Добавить пароли в группу"
 //       onClose={onClose}
 //       footer={
 //         <>
@@ -76,7 +74,7 @@
 //             onClick={onClose}
 //             disabled={saving}
 //           >
-//             Annuler
+//             Отмена
 //           </button>
 //           <button
 //             className="btn btn-primary"
@@ -85,19 +83,19 @@
 //           >
 //             <FaSave />{" "}
 //             {saving
-//               ? "Sauvegarde..."
-//               : `Ajouter (${selectedPasswordIds.length})`}
+//               ? "Сохранение..."
+//               : `Добавить (${selectedPasswordIds.length})`}
 //           </button>
 //         </>
 //       }
 //     >
 //       {loading ? (
-//         <p>Chargement des mots de passe disponibles...</p>
+//         <p>Загрузка доступных паролей...</p>
 //       ) : ungroupedPasswords.length === 0 ? (
-//         <p>Tous vos mots de passe sont déjà organisés dans des groupes.</p>
+//         <p>Все ваши пароли уже организованы в группы.</p>
 //       ) : (
 //         <div className="form-group">
-//           <label>Cochez les mots de passe à inclure dans ce groupe :</label>
+//           <label>Отметьте пароли для включения в эту группу:</label>
 //           <div className="mb-2">
 //             <label
 //               className="checkbox-container flex items-center gap-2"
@@ -111,7 +109,7 @@
 //                 }
 //                 onChange={handleSelectAll}
 //               />
-//               Tout sélectionner
+//               Выбрать все
 //             </label>
 //           </div>
 //           <div
@@ -151,8 +149,6 @@
 // };
 
 // export default AddPasswordsToGroupModal;
-
-// src/components/AddPasswordsToGroupModal.jsx
 
 import React, { useState, useEffect } from "react";
 import Modal from "./Modal";
@@ -253,7 +249,7 @@ const AddPasswordsToGroupModal = ({ groupId, onSave, onClose }) => {
           <div className="mb-2">
             <label
               className="checkbox-container flex items-center gap-2"
-              style={{ fontWeight: "bold" }}
+              style={{ fontWeight: "bold", cursor: "pointer" }}
             >
               <input
                 type="checkbox"
@@ -279,7 +275,12 @@ const AddPasswordsToGroupModal = ({ groupId, onSave, onClose }) => {
               <label
                 key={password._id}
                 className="checkbox-container mb-2 flex items-center"
-                style={{ display: "flex", alignItems: "center", gap: "10px" }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  cursor: "pointer",
+                }}
               >
                 <input
                   type="checkbox"
