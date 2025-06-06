@@ -1,355 +1,64 @@
-// // // // src/components/AddPasswordsToGroupModal.jsx
-
-// // // import React, { useState, useEffect } from "react";
-// // // import Modal from "./Modal";
-// // // import api from "../utils/api";
-// // // import { toast } from "react-toastify";
-// // // import { FaSave } from "react-icons/fa";
-
-// // // const AddPasswordsToGroupModal = ({ groupId, onSave, onClose }) => {
-// // //   const [ungroupedPasswords, setUngroupedPasswords] = useState([]);
-// // //   const [selectedPasswordIds, setSelectedPasswordIds] = useState([]);
-// // //   const [loading, setLoading] = useState(true);
-// // //   const [saving, setSaving] = useState(false);
-
-// // //   useEffect(() => {
-// // //     const fetchUngroupedPasswords = async () => {
-// // //       setLoading(true);
-// // //       try {
-// // //         const res = await api.get("/api/passwords/ungrouped");
-// // //         setUngroupedPasswords(res.data);
-// // //       } catch (error) {
-// // //         toast.error("Ошибка при загрузке паролей.");
-// // //       } finally {
-// // //         setLoading(false);
-// // //       }
-// // //     };
-
-// // //     fetchUngroupedPasswords();
-// // //   }, []);
-
-// // //   const handleTogglePassword = (passwordId) => {
-// // //     setSelectedPasswordIds((prev) =>
-// // //       prev.includes(passwordId)
-// // //         ? prev.filter((id) => id !== passwordId)
-// // //         : [...prev, passwordId]
-// // //     );
-// // //   };
-
-// // //   const handleSelectAll = () => {
-// // //     if (selectedPasswordIds.length === ungroupedPasswords.length) {
-// // //       setSelectedPasswordIds([]);
-// // //     } else {
-// // //       setSelectedPasswordIds(ungroupedPasswords.map((p) => p._id));
-// // //     }
-// // //   };
-
-// // //   const handleSubmit = async () => {
-// // //     if (selectedPasswordIds.length === 0) {
-// // //       toast.info("Пожалуйста, выберите хотя бы один пароль.");
-// // //       return;
-// // //     }
-// // //     setSaving(true);
-// // //     try {
-// // //       await api.put(`/api/groups/${groupId}/add-passwords`, {
-// // //         passwordIds: selectedPasswordIds,
-// // //       });
-// // //       toast.success(`${selectedPasswordIds.length} пароль(ей) добавлено!`);
-// // //       onSave();
-// // //     } catch (error) {
-// // //       toast.error("Ошибка при добавлении паролей.");
-// // //     } finally {
-// // //       setSaving(false);
-// // //     }
-// // //   };
-
-// // //   return (
-// // //     <Modal
-// // //       title="Добавить пароли в группу"
-// // //       onClose={onClose}
-// // //       footer={
-// // //         <>
-// // //           <button
-// // //             className="btn btn-secondary"
-// // //             onClick={onClose}
-// // //             disabled={saving}
-// // //           >
-// // //             Отмена
-// // //           </button>
-// // //           <button
-// // //             className="btn btn-primary"
-// // //             onClick={handleSubmit}
-// // //             disabled={saving || selectedPasswordIds.length === 0}
-// // //           >
-// // //             <FaSave />{" "}
-// // //             {saving
-// // //               ? "Сохранение..."
-// // //               : `Добавить (${selectedPasswordIds.length})`}
-// // //           </button>
-// // //         </>
-// // //       }
-// // //     >
-// // //       {loading ? (
-// // //         <p>Загрузка доступных паролей...</p>
-// // //       ) : ungroupedPasswords.length === 0 ? (
-// // //         <p>Все ваши пароли уже организованы в группы.</p>
-// // //       ) : (
-// // //         <div className="form-group">
-// // //           <label>Отметьте пароли для включения в эту группу:</label>
-// // //           <div className="mb-2">
-// // //             <label
-// // //               className="checkbox-container flex items-center gap-2"
-// // //               style={{ fontWeight: "bold" }}
-// // //             >
-// // //               <input
-// // //                 type="checkbox"
-// // //                 checked={
-// // //                   selectedPasswordIds.length > 0 &&
-// // //                   selectedPasswordIds.length === ungroupedPasswords.length
-// // //                 }
-// // //                 onChange={handleSelectAll}
-// // //               />
-// // //               Выбрать все
-// // //             </label>
-// // //           </div>
-// // //           <div
-// // //             style={{
-// // //               maxHeight: "40vh",
-// // //               overflowY: "auto",
-// // //               border: "1px solid #e9ecef",
-// // //               padding: "1rem",
-// // //               borderRadius: "var(--border-radius)",
-// // //             }}
-// // //           >
-// // //             {ungroupedPasswords.map((password) => (
-// // //               <label
-// // //                 key={password._id}
-// // //                 className="checkbox-container mb-2 flex items-center"
-// // //                 style={{ display: "flex", alignItems: "center", gap: "10px" }}
-// // //               >
-// // //                 <input
-// // //                   type="checkbox"
-// // //                   checked={selectedPasswordIds.includes(password._id)}
-// // //                   onChange={() => handleTogglePassword(password._id)}
-// // //                 />
-// // //                 <div>
-// // //                   <strong>{password.title}</strong>
-// // //                   <br />
-// // //                   <small style={{ color: "#6c757d" }}>
-// // //                     {password.username}
-// // //                   </small>
-// // //                 </div>
-// // //               </label>
-// // //             ))}
-// // //           </div>
-// // //         </div>
-// // //       )}
-// // //     </Modal>
-// // //   );
-// // // };
-
-// // // export default AddPasswordsToGroupModal;
-
-// // import React, { useState, useEffect } from "react";
-// // import Modal from "./Modal";
-// // import api from "../utils/api";
-// // import { toast } from "react-toastify";
-// // import { FaSave } from "react-icons/fa";
-
-// // const AddPasswordsToGroupModal = ({ groupId, onSave, onClose }) => {
-// //   const [ungroupedPasswords, setUngroupedPasswords] = useState([]);
-// //   const [selectedPasswordIds, setSelectedPasswordIds] = useState([]);
-// //   const [loading, setLoading] = useState(true);
-// //   const [saving, setSaving] = useState(false);
-
-// //   useEffect(() => {
-// //     const fetchUngroupedPasswords = async () => {
-// //       setLoading(true);
-// //       try {
-// //         const res = await api.get("/api/passwords/ungrouped");
-// //         setUngroupedPasswords(res.data);
-// //       } catch (error) {
-// //         toast.error("Ошибка при загрузке паролей.");
-// //       } finally {
-// //         setLoading(false);
-// //       }
-// //     };
-
-// //     fetchUngroupedPasswords();
-// //   }, []);
-
-// //   const handleTogglePassword = (passwordId) => {
-// //     setSelectedPasswordIds((prev) =>
-// //       prev.includes(passwordId)
-// //         ? prev.filter((id) => id !== passwordId)
-// //         : [...prev, passwordId]
-// //     );
-// //   };
-
-// //   const handleSelectAll = () => {
-// //     if (selectedPasswordIds.length === ungroupedPasswords.length) {
-// //       setSelectedPasswordIds([]);
-// //     } else {
-// //       setSelectedPasswordIds(ungroupedPasswords.map((p) => p._id));
-// //     }
-// //   };
-
-// //   const handleSubmit = async () => {
-// //     if (selectedPasswordIds.length === 0) {
-// //       toast.info("Пожалуйста, выберите хотя бы один пароль.");
-// //       return;
-// //     }
-// //     setSaving(true);
-// //     try {
-// //       await api.put(`/api/groups/${groupId}/add-passwords`, {
-// //         passwordIds: selectedPasswordIds,
-// //       });
-// //       toast.success(`${selectedPasswordIds.length} пароль(ей) добавлено!`);
-// //       onSave();
-// //     } catch (error) {
-// //       toast.error("Ошибка при добавлении паролей.");
-// //     } finally {
-// //       setSaving(false);
-// //     }
-// //   };
-
-// //   return (
-// //     <Modal
-// //       title="Добавить пароли в группу"
-// //       onClose={onClose}
-// //       footer={
-// //         <>
-// //           <button
-// //             className="btn btn-secondary"
-// //             onClick={onClose}
-// //             disabled={saving}
-// //           >
-// //             Отмена
-// //           </button>
-// //           <button
-// //             className="btn btn-primary"
-// //             onClick={handleSubmit}
-// //             disabled={saving || selectedPasswordIds.length === 0}
-// //           >
-// //             <FaSave />{" "}
-// //             {saving
-// //               ? "Сохранение..."
-// //               : `Добавить (${selectedPasswordIds.length})`}
-// //           </button>
-// //         </>
-// //       }
-// //     >
-// //       {loading ? (
-// //         <p>Загрузка доступных паролей...</p>
-// //       ) : ungroupedPasswords.length === 0 ? (
-// //         <p>Все ваши пароли уже организованы в группы.</p>
-// //       ) : (
-// //         <div className="form-group">
-// //           <label>Отметьте пароли для включения в эту группу:</label>
-// //           <div className="mb-2">
-// //             <label
-// //               className="checkbox-container flex items-center gap-2"
-// //               style={{ fontWeight: "bold", cursor: "pointer" }}
-// //             >
-// //               <input
-// //                 type="checkbox"
-// //                 checked={
-// //                   selectedPasswordIds.length > 0 &&
-// //                   selectedPasswordIds.length === ungroupedPasswords.length
-// //                 }
-// //                 onChange={handleSelectAll}
-// //               />
-// //               Выбрать все
-// //             </label>
-// //           </div>
-// //           <div
-// //             style={{
-// //               maxHeight: "40vh",
-// //               overflowY: "auto",
-// //               border: "1px solid #e9ecef",
-// //               padding: "1rem",
-// //               borderRadius: "var(--border-radius)",
-// //             }}
-// //           >
-// //             {ungroupedPasswords.map((password) => (
-// //               <label
-// //                 key={password._id}
-// //                 className="checkbox-container mb-2 flex items-center"
-// //                 style={{
-// //                   display: "flex",
-// //                   alignItems: "center",
-// //                   gap: "10px",
-// //                   cursor: "pointer",
-// //                 }}
-// //               >
-// //                 <input
-// //                   type="checkbox"
-// //                   checked={selectedPasswordIds.includes(password._id)}
-// //                   onChange={() => handleTogglePassword(password._id)}
-// //                 />
-// //                 <div>
-// //                   <strong>{password.title}</strong>
-// //                   <br />
-// //                   <small style={{ color: "#6c757d" }}>
-// //                     {password.username}
-// //                   </small>
-// //                 </div>
-// //               </label>
-// //             ))}
-// //           </div>
-// //         </div>
-// //       )}
-// //     </Modal>
-// //   );
-// // };
-
-// // export default AddPasswordsToGroupModal;
-
 // import React, { useState, useEffect } from "react";
 // import Modal from "./Modal";
 // import api from "../utils/api";
 // import { toast } from "react-toastify";
-// import { FaSave, FaSpinner, FaKey, FaSearch } from "react-icons/fa";
+// import { FaSave, FaSpinner, FaKey, FaSearch, FaPlus } from "react-icons/fa";
 // import PropTypes from "prop-types";
 
 // const AddPasswordsToGroupModal = ({ groupId, onSave, onClose }) => {
-//   const [ungroupedPasswords, setUngroupedPasswords] = useState([]);
+//   const [allPasswords, setAllPasswords] = useState([]);
 //   const [filteredPasswords, setFilteredPasswords] = useState([]);
 //   const [selectedPasswordIds, setSelectedPasswordIds] = useState([]);
 //   const [loading, setLoading] = useState(true);
 //   const [saving, setSaving] = useState(false);
 //   const [searchTerm, setSearchTerm] = useState("");
 //   const [error, setError] = useState(null);
+//   const [showCreateForm, setShowCreateForm] = useState(false);
 
-//   // Charger les mots de passe non groupés
+//   // État pour le formulaire de création
+//   const [newPassword, setNewPassword] = useState({
+//     title: "",
+//     username: "",
+//     password: "",
+//     url: "",
+//     notes: "",
+//   });
+//   const [creating, setCreating] = useState(false);
+
+//   // Charger TOUS les mots de passe de l'utilisateur
+//   const fetchAllPasswords = async () => {
+//     setLoading(true);
+//     setError(null);
+
+//     try {
+//       console.log("🔄 Chargement de tous les mots de passe...");
+
+//       const res = await api.get("/api/passwords");
+//       console.log("✅ Mots de passe reçus:", res.data.length);
+
+//       setAllPasswords(res.data);
+//       setFilteredPasswords(res.data);
+//     } catch (error) {
+//       console.error("❌ Erreur lors du chargement:", error);
+//       setError("Ошибка при загрузке паролей");
+//       toast.error("Ошибка при загрузке паролей.");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
 //   useEffect(() => {
-//     const fetchUngroupedPasswords = async () => {
-//       setLoading(true);
-//       setError(null);
-//       try {
-//         const res = await api.get("/api/passwords/ungrouped");
-//         setUngroupedPasswords(res.data);
-//         setFilteredPasswords(res.data);
-//       } catch (error) {
-//         console.error("Ошибка при загрузке паролей:", error);
-//         setError("Ошибка при загрузке паролей");
-//         toast.error("Ошибка при загрузке паролей.");
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
 //     if (groupId) {
-//       fetchUngroupedPasswords();
+//       fetchAllPasswords();
 //     }
 //   }, [groupId]);
 
 //   // Filtrer les mots de passe selon le terme de recherche
 //   useEffect(() => {
 //     if (!searchTerm.trim()) {
-//       setFilteredPasswords(ungroupedPasswords);
+//       setFilteredPasswords(allPasswords);
 //     } else {
-//       const filtered = ungroupedPasswords.filter(
+//       const filtered = allPasswords.filter(
 //         (password) =>
 //           password.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
 //           password.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -358,7 +67,7 @@
 //       );
 //       setFilteredPasswords(filtered);
 //     }
-//   }, [searchTerm, ungroupedPasswords]);
+//   }, [searchTerm, allPasswords]);
 
 //   const handleTogglePassword = (passwordId) => {
 //     setSelectedPasswordIds((prev) =>
@@ -373,10 +82,8 @@
 //       selectedPasswordIds.length === filteredPasswords.length &&
 //       filteredPasswords.length > 0
 //     ) {
-//       // Désélectionner tout
 //       setSelectedPasswordIds([]);
 //     } else {
-//       // Sélectionner tous les mots de passe filtrés
 //       setSelectedPasswordIds(filteredPasswords.map((p) => p._id));
 //     }
 //   };
@@ -385,7 +92,50 @@
 //     setSearchTerm(e.target.value);
 //   };
 
-//   const handleSubmit = async () => {
+//   const handleCreatePassword = async () => {
+//     if (!newPassword.title || !newPassword.username || !newPassword.password) {
+//       toast.error(
+//         "Пожалуйста, заполните обязательные поля (название, имя пользователя, пароль)"
+//       );
+//       return;
+//     }
+
+//     setCreating(true);
+//     try {
+//       console.log("🆕 Создание нового пароля...");
+
+//       const response = await api.post("/api/passwords", {
+//         ...newPassword,
+//         groupId: groupId,
+//       });
+
+//       console.log("✅ Пароль создан:", response.data);
+
+//       toast.success(
+//         `Пароль "${newPassword.title}" создан и добавлен в группу!`
+//       );
+
+//       setNewPassword({
+//         title: "",
+//         username: "",
+//         password: "",
+//         url: "",
+//         notes: "",
+//       });
+//       setShowCreateForm(false);
+
+//       onSave();
+//     } catch (error) {
+//       console.error("❌ Ошибка создания пароля:", error);
+//       const errorMessage =
+//         error.response?.data?.msg || "Ошибка при создании пароля";
+//       toast.error(errorMessage);
+//     } finally {
+//       setCreating(false);
+//     }
+//   };
+
+//   const handleSubmitExisting = async () => {
 //     if (selectedPasswordIds.length === 0) {
 //       toast.info("Пожалуйста, выберите хотя бы один пароль.");
 //       return;
@@ -393,15 +143,20 @@
 
 //     setSaving(true);
 //     try {
-//       await api.put(`/api/groups/${groupId}/add-passwords`, {
+//       console.log("📤 Добавление паролей в группу...");
+
+//       const response = await api.put(`/api/groups/${groupId}/add-passwords`, {
 //         passwordIds: selectedPasswordIds,
 //       });
+
+//       console.log("✅ Пароли добавлены:", response.data);
+
 //       toast.success(
 //         `${selectedPasswordIds.length} пароль(ей) добавлено в группу!`
 //       );
-//       onSave(); // Callback pour actualiser la vue parent
+//       onSave();
 //     } catch (error) {
-//       console.error("Ошибка при добавлении паролей:", error);
+//       console.error("❌ Ошибка добавления паролей:", error);
 //       const errorMessage =
 //         error.response?.data?.msg || "Ошибка при добавлении паролей";
 //       toast.error(errorMessage);
@@ -420,39 +175,78 @@
 //       title="Добавить пароли в группу"
 //       onClose={onClose}
 //       footer={
-//         <>
+//         <div
+//           style={{
+//             display: "flex",
+//             justifyContent: "flex-end",
+//             gap: "0.5rem",
+//             width: "100%",
+//           }}
+//         >
 //           <button
 //             className="btn btn-secondary"
 //             onClick={onClose}
-//             disabled={saving}
+//             disabled={saving || creating}
 //             type="button"
 //           >
 //             Отмена
 //           </button>
-//           <button
-//             className="btn btn-primary"
-//             onClick={handleSubmit}
-//             disabled={saving || selectedPasswordIds.length === 0}
-//             type="button"
-//           >
-//             {saving ? (
-//               <>
-//                 <FaSpinner
-//                   style={{
-//                     marginRight: "0.5rem",
-//                     animation: "spin 1s linear infinite",
-//                   }}
-//                 />
-//                 Сохранение...
-//               </>
-//             ) : (
-//               <>
-//                 <FaSave style={{ marginRight: "0.5rem" }} />
-//                 Добавить ({selectedPasswordIds.length})
-//               </>
-//             )}
-//           </button>
-//         </>
+
+//           {showCreateForm ? (
+//             <button
+//               className="btn btn-success"
+//               onClick={handleCreatePassword}
+//               disabled={
+//                 creating ||
+//                 !newPassword.title ||
+//                 !newPassword.username ||
+//                 !newPassword.password
+//               }
+//               type="button"
+//             >
+//               {creating ? (
+//                 <>
+//                   <FaSpinner
+//                     style={{
+//                       marginRight: "0.5rem",
+//                       animation: "spin 1s linear infinite",
+//                     }}
+//                   />
+//                   Создание...
+//                 </>
+//               ) : (
+//                 <>
+//                   <FaSave style={{ marginRight: "0.5rem" }} />
+//                   Создать пароль
+//                 </>
+//               )}
+//             </button>
+//           ) : (
+//             <button
+//               className="btn btn-primary"
+//               onClick={handleSubmitExisting}
+//               disabled={saving || selectedPasswordIds.length === 0}
+//               type="button"
+//             >
+//               {saving ? (
+//                 <>
+//                   <FaSpinner
+//                     style={{
+//                       marginRight: "0.5rem",
+//                       animation: "spin 1s linear infinite",
+//                     }}
+//                   />
+//                   Добавление...
+//                 </>
+//               ) : (
+//                 <>
+//                   <FaSave style={{ marginRight: "0.5rem" }} />
+//                   Добавить ({selectedPasswordIds.length})
+//                 </>
+//               )}
+//             </button>
+//           )}
+//         </div>
 //       }
 //     >
 //       {loading ? (
@@ -464,40 +258,259 @@
 //               marginBottom: "1rem",
 //             }}
 //           />
-//           <p>Загрузка доступных паролей...</p>
+//           <p>Загрузка ваших паролей...</p>
 //         </div>
 //       ) : error ? (
 //         <div style={{ textAlign: "center", padding: "2rem" }}>
-//           <p style={{ color: "#dc3545" }}>{error}</p>
+//           <p style={{ color: "#dc3545", marginBottom: "1rem" }}>{error}</p>
 //           <button
 //             className="btn btn-secondary"
-//             onClick={() => window.location.reload()}
-//           >
-//             Попробовать снова
-//           </button>
-//         </div>
-//       ) : ungroupedPasswords.length === 0 ? (
-//         <div style={{ textAlign: "center", padding: "2rem" }}>
-//           <FaKey size={40} color="#6c757d" style={{ marginBottom: "1rem" }} />
-//           <p style={{ color: "#6c757d", fontSize: "1.1rem" }}>
-//             Все ваши пароли уже организованы в группы.
-//           </p>
-//           <small style={{ color: "#6c757d" }}>
-//             Создайте новые пароли или удалите их из других групп, чтобы добавить
-//             их сюда.
-//           </small>
-//         </div>
-//       ) : (
-//         <div className="form-group">
-//           <label
+//             onClick={fetchAllPasswords}
 //             style={{
-//               display: "block",
-//               marginBottom: "1rem",
-//               fontWeight: "bold",
+//               display: "inline-flex",
+//               alignItems: "center",
+//               gap: "0.5rem",
 //             }}
 //           >
-//             Отметьте пароли для включения в эту группу:
-//           </label>
+//             🔄 Попробовать снова
+//           </button>
+//         </div>
+//       ) : showCreateForm ? (
+//         // Formulaire de création de mot de passe
+//         <div>
+//           <div
+//             style={{
+//               display: "flex",
+//               justifyContent: "space-between",
+//               alignItems: "center",
+//               marginBottom: "1rem",
+//             }}
+//           >
+//             <h4 style={{ margin: 0 }}>Создать новый пароль</h4>
+//             <button
+//               className="btn btn-secondary btn-sm"
+//               onClick={() => setShowCreateForm(false)}
+//               type="button"
+//             >
+//               ← Назад к списку
+//             </button>
+//           </div>
+
+//           <div style={{ display: "grid", gap: "1rem" }}>
+//             <div>
+//               <label
+//                 style={{
+//                   display: "block",
+//                   marginBottom: "0.5rem",
+//                   fontWeight: "bold",
+//                 }}
+//               >
+//                 Название *
+//               </label>
+//               <input
+//                 type="text"
+//                 value={newPassword.title}
+//                 onChange={(e) =>
+//                   setNewPassword((prev) => ({ ...prev, title: e.target.value }))
+//                 }
+//                 placeholder="Например: Gmail, Facebook..."
+//                 style={{
+//                   width: "100%",
+//                   padding: "0.75rem",
+//                   border: "1px solid #ced4da",
+//                   borderRadius: "4px",
+//                   fontSize: "1rem",
+//                 }}
+//                 autoFocus
+//               />
+//             </div>
+
+//             <div>
+//               <label
+//                 style={{
+//                   display: "block",
+//                   marginBottom: "0.5rem",
+//                   fontWeight: "bold",
+//                 }}
+//               >
+//                 Имя пользователя *
+//               </label>
+//               <input
+//                 type="text"
+//                 value={newPassword.username}
+//                 onChange={(e) =>
+//                   setNewPassword((prev) => ({
+//                     ...prev,
+//                     username: e.target.value,
+//                   }))
+//                 }
+//                 placeholder="Имя пользователя или email"
+//                 style={{
+//                   width: "100%",
+//                   padding: "0.75rem",
+//                   border: "1px solid #ced4da",
+//                   borderRadius: "4px",
+//                   fontSize: "1rem",
+//                 }}
+//               />
+//             </div>
+
+//             <div>
+//               <label
+//                 style={{
+//                   display: "block",
+//                   marginBottom: "0.5rem",
+//                   fontWeight: "bold",
+//                 }}
+//               >
+//                 Пароль *
+//               </label>
+//               <input
+//                 type="password"
+//                 value={newPassword.password}
+//                 onChange={(e) =>
+//                   setNewPassword((prev) => ({
+//                     ...prev,
+//                     password: e.target.value,
+//                   }))
+//                 }
+//                 placeholder="Пароль"
+//                 style={{
+//                   width: "100%",
+//                   padding: "0.75rem",
+//                   border: "1px solid #ced4da",
+//                   borderRadius: "4px",
+//                   fontSize: "1rem",
+//                 }}
+//               />
+//             </div>
+
+//             <div>
+//               <label
+//                 style={{
+//                   display: "block",
+//                   marginBottom: "0.5rem",
+//                   fontWeight: "bold",
+//                 }}
+//               >
+//                 URL (необязательно)
+//               </label>
+//               <input
+//                 type="url"
+//                 value={newPassword.url}
+//                 onChange={(e) =>
+//                   setNewPassword((prev) => ({ ...prev, url: e.target.value }))
+//                 }
+//                 placeholder="https://example.com"
+//                 style={{
+//                   width: "100%",
+//                   padding: "0.75rem",
+//                   border: "1px solid #ced4da",
+//                   borderRadius: "4px",
+//                   fontSize: "1rem",
+//                 }}
+//               />
+//             </div>
+
+//             <div>
+//               <label
+//                 style={{
+//                   display: "block",
+//                   marginBottom: "0.5rem",
+//                   fontWeight: "bold",
+//                 }}
+//               >
+//                 Заметки (необязательно)
+//               </label>
+//               <textarea
+//                 value={newPassword.notes}
+//                 onChange={(e) =>
+//                   setNewPassword((prev) => ({ ...prev, notes: e.target.value }))
+//                 }
+//                 placeholder="Дополнительные заметки..."
+//                 rows="3"
+//                 style={{
+//                   width: "100%",
+//                   padding: "0.75rem",
+//                   border: "1px solid #ced4da",
+//                   borderRadius: "4px",
+//                   fontSize: "1rem",
+//                   resize: "vertical",
+//                 }}
+//               />
+//             </div>
+//           </div>
+//         </div>
+//       ) : allPasswords.length === 0 ? (
+//         // Aucun mot de passe
+//         <div style={{ textAlign: "center", padding: "2rem" }}>
+//           <FaKey size={40} color="#6c757d" style={{ marginBottom: "1rem" }} />
+//           <p
+//             style={{
+//               color: "#6c757d",
+//               fontSize: "1.1rem",
+//               marginBottom: "1rem",
+//             }}
+//           >
+//             У вас пока нет паролей.
+//           </p>
+//           <small
+//             style={{
+//               color: "#6c757d",
+//               marginBottom: "1.5rem",
+//               display: "block",
+//             }}
+//           >
+//             Создайте свой первый пароль.
+//           </small>
+
+//           <button
+//             className="btn btn-success"
+//             onClick={() => setShowCreateForm(true)}
+//             type="button"
+//             style={{ fontSize: "1rem", padding: "0.75rem 1.5rem" }}
+//           >
+//             <FaPlus style={{ marginRight: "0.5rem" }} />
+//             Создать первый пароль
+//           </button>
+//         </div>
+//       ) : (
+//         // Liste des mots de passe
+//         <div className="form-group">
+//           <div
+//             style={{
+//               display: "flex",
+//               justifyContent: "space-between",
+//               alignItems: "center",
+//               marginBottom: "1rem",
+//             }}
+//           >
+//             <label style={{ fontWeight: "bold", margin: 0 }}>
+//               Выберите пароли для добавления в группу:
+//             </label>
+//             <button
+//               className="btn btn-success btn-sm"
+//               onClick={() => setShowCreateForm(true)}
+//               type="button"
+//             >
+//               <FaPlus style={{ marginRight: "0.5rem" }} />
+//               Создать новый
+//             </button>
+//           </div>
+
+//           {/* Info */}
+//           <div
+//             style={{
+//               backgroundColor: "#e3f2fd",
+//               padding: "0.75rem",
+//               borderRadius: "4px",
+//               marginBottom: "1rem",
+//               fontSize: "0.9rem",
+//               color: "#1976d2",
+//             }}
+//           >
+//             💡 Пароль может быть добавлен в несколько групп одновременно
+//           </div>
 
 //           {/* Barre de recherche */}
 //           <div style={{ position: "relative", marginBottom: "1rem" }}>
@@ -578,6 +591,7 @@
 //             >
 //               {filteredPasswords.map((password) => {
 //                 const isSelected = selectedPasswordIds.includes(password._id);
+//                 const hasGroup = password.groupId && password.groupId.name;
 
 //                 return (
 //                   <label
@@ -625,10 +639,24 @@
 //                           style={{
 //                             color: "#007bff",
 //                             fontSize: "0.8rem",
-//                             textDecoration: "none",
+//                             marginBottom: "0.25rem",
 //                           }}
 //                         >
 //                           {password.url}
+//                         </div>
+//                       )}
+//                       {hasGroup && (
+//                         <div
+//                           style={{
+//                             fontSize: "0.75rem",
+//                             color: "#6c757d",
+//                             backgroundColor: "#f8f9fa",
+//                             padding: "0.25rem 0.5rem",
+//                             borderRadius: "3px",
+//                             display: "inline-block",
+//                           }}
+//                         >
+//                           📁 В группе: {password.groupId.name}
 //                         </div>
 //                       )}
 //                     </div>
@@ -668,22 +696,19 @@
 
 // export default AddPasswordsToGroupModal;
 
+// =================================================================
+// 1. AddPasswordsToGroupModal.jsx CORRIGÉ
+// =================================================================
+
 import React, { useState, useEffect } from "react";
 import Modal from "./Modal";
 import api from "../utils/api";
 import { toast } from "react-toastify";
-import {
-  FaSave,
-  FaSpinner,
-  FaKey,
-  FaSearch,
-  FaPlus,
-  FaRefresh,
-} from "react-icons/fa";
+import { FaSave, FaSpinner, FaKey, FaSearch, FaPlus } from "react-icons/fa";
 import PropTypes from "prop-types";
 
 const AddPasswordsToGroupModal = ({ groupId, onSave, onClose }) => {
-  const [ungroupedPasswords, setUngroupedPasswords] = useState([]);
+  const [allPasswords, setAllPasswords] = useState([]);
   const [filteredPasswords, setFilteredPasswords] = useState([]);
   const [selectedPasswordIds, setSelectedPasswordIds] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -691,7 +716,6 @@ const AddPasswordsToGroupModal = ({ groupId, onSave, onClose }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [error, setError] = useState(null);
   const [showCreateForm, setShowCreateForm] = useState(false);
-  const [debugInfo, setDebugInfo] = useState(null);
 
   // État pour le formulaire de création
   const [newPassword, setNewPassword] = useState({
@@ -703,39 +727,23 @@ const AddPasswordsToGroupModal = ({ groupId, onSave, onClose }) => {
   });
   const [creating, setCreating] = useState(false);
 
-  // Charger les mots de passe non groupés
-  const fetchUngroupedPasswords = async () => {
+  // Charger TOUS les mots de passe de l'utilisateur
+  const fetchAllPasswords = async () => {
     setLoading(true);
     setError(null);
+
     try {
-      console.log("🔄 Chargement des mots de passe non groupés...");
+      console.log("🔄 Chargement de tous les mots de passe...");
 
-      // Récupérer les mots de passe non groupés
-      const res = await api.get("/api/passwords/ungrouped");
-      console.log("📦 Réponse reçue:", res.data);
+      const res = await api.get("/api/passwords");
+      console.log("✅ Mots de passe reçus:", res.data.length);
+      console.log("📋 Exemple de structure:", res.data[0]);
 
-      setUngroupedPasswords(res.data);
+      setAllPasswords(res.data);
       setFilteredPasswords(res.data);
-
-      // Récupérer des infos de debug
-      const allPasswordsRes = await api.get("/api/passwords");
-      const totalPasswords = allPasswordsRes.data.length;
-      const ungroupedCount = res.data.length;
-
-      setDebugInfo({
-        total: totalPasswords,
-        ungrouped: ungroupedCount,
-        grouped: totalPasswords - ungroupedCount,
-      });
-
-      console.log(
-        `📊 Stats: ${totalPasswords} total, ${ungroupedCount} non groupés, ${
-          totalPasswords - ungroupedCount
-        } groupés`
-      );
     } catch (error) {
       console.error("❌ Erreur lors du chargement:", error);
-      setError(error.response?.data?.msg || "Ошибка при загрузке паролей");
+      setError("Ошибка при загрузке паролей");
       toast.error("Ошибка при загрузке паролей.");
     } finally {
       setLoading(false);
@@ -744,16 +752,16 @@ const AddPasswordsToGroupModal = ({ groupId, onSave, onClose }) => {
 
   useEffect(() => {
     if (groupId) {
-      fetchUngroupedPasswords();
+      fetchAllPasswords();
     }
   }, [groupId]);
 
   // Filtrer les mots de passe selon le terme de recherche
   useEffect(() => {
     if (!searchTerm.trim()) {
-      setFilteredPasswords(ungroupedPasswords);
+      setFilteredPasswords(allPasswords);
     } else {
-      const filtered = ungroupedPasswords.filter(
+      const filtered = allPasswords.filter(
         (password) =>
           password.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
           password.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -762,9 +770,10 @@ const AddPasswordsToGroupModal = ({ groupId, onSave, onClose }) => {
       );
       setFilteredPasswords(filtered);
     }
-  }, [searchTerm, ungroupedPasswords]);
+  }, [searchTerm, allPasswords]);
 
   const handleTogglePassword = (passwordId) => {
+    console.log("🔄 Toggle password:", passwordId, typeof passwordId);
     setSelectedPasswordIds((prev) =>
       prev.includes(passwordId)
         ? prev.filter((id) => id !== passwordId)
@@ -799,19 +808,18 @@ const AddPasswordsToGroupModal = ({ groupId, onSave, onClose }) => {
     try {
       console.log("🆕 Создание нового пароля...");
 
-      // Créer le mot de passe directement dans le groupe
+      // ✅ CORRIGÉ : Utiliser groupIds pour many-to-many
       const response = await api.post("/api/passwords", {
         ...newPassword,
-        groupId: groupId, // Assigner directement au groupe
+        groupIds: [groupId], // ✅ Changé de groupId vers groupIds
       });
 
-      console.log("✅ Mot de passe créé:", response.data);
+      console.log("✅ Пароль создан:", response.data);
 
       toast.success(
         `Пароль "${newPassword.title}" создан и добавлен в группу!`
       );
 
-      // Réinitialiser le formulaire
       setNewPassword({
         title: "",
         username: "",
@@ -821,10 +829,9 @@ const AddPasswordsToGroupModal = ({ groupId, onSave, onClose }) => {
       });
       setShowCreateForm(false);
 
-      // Fermer le modal et actualiser
       onSave();
     } catch (error) {
-      console.error("❌ Erreur création mot de passe:", error);
+      console.error("❌ Ошибка создания пароля:", error);
       const errorMessage =
         error.response?.data?.msg || "Ошибка при создании пароля";
       toast.error(errorMessage);
@@ -839,22 +846,57 @@ const AddPasswordsToGroupModal = ({ groupId, onSave, onClose }) => {
       return;
     }
 
+    // ✅ DEBUGGING MAXIMAL AJOUTÉ
+    console.log("🚀 === DÉBUT AJOUT FRONTEND ===");
+    console.log("📋 Group ID:", groupId);
+    console.log("📋 Type Group ID:", typeof groupId);
+    console.log("📋 Password IDs sélectionnés:", selectedPasswordIds);
+    console.log(
+      "📋 Types Password IDs:",
+      selectedPasswordIds.map((id) => typeof id)
+    );
+    console.log("🌐 URL:", `/api/groups/${groupId}/add-passwords`);
+
+    // Vérifier que les IDs sélectionnés correspondent aux mots de passe chargés
+    console.log("🔍 === VÉRIFICATION CORRESPONDANCE ===");
+    selectedPasswordIds.forEach((id) => {
+      const password = allPasswords.find((p) => p._id === id);
+      if (password) {
+        console.log(`   ✅ ${password.title} (ID: ${id})`);
+      } else {
+        console.log(`   ❌ ID non trouvé: ${id}`);
+      }
+    });
+
+    console.log("📊 === TOUS LES MOTS DE PASSE DISPONIBLES ===");
+    allPasswords.slice(0, 10).forEach((p, i) => {
+      console.log(`   ${i + 1}. "${p._id}" - ${p.title}`);
+    });
+
     setSaving(true);
     try {
-      console.log("📤 Добавление существующих паролей в группу...");
+      console.log("📤 Envoi de la requête...");
 
       const response = await api.put(`/api/groups/${groupId}/add-passwords`, {
         passwordIds: selectedPasswordIds,
       });
 
-      console.log("✅ Réponse serveur:", response.data);
+      console.log("✅ Réponse reçue:", response.data);
 
       toast.success(
         `${selectedPasswordIds.length} пароль(ей) добавлено в группу!`
       );
       onSave();
     } catch (error) {
-      console.error("❌ Erreur ajout mots de passe:", error);
+      console.error("❌ === ERREUR FRONTEND ===");
+      console.error("❌ Error object:", error);
+      console.error("❌ Status:", error.response?.status);
+      console.error("❌ Status Text:", error.response?.statusText);
+      console.error("❌ Response Data:", error.response?.data);
+      console.error("❌ Request URL:", error.config?.url);
+      console.error("❌ Request Method:", error.config?.method);
+      console.error("❌ Request Data:", error.config?.data);
+
       const errorMessage =
         error.response?.data?.msg || "Ошибка при добавлении паролей";
       toast.error(errorMessage);
@@ -876,83 +918,74 @@ const AddPasswordsToGroupModal = ({ groupId, onSave, onClose }) => {
         <div
           style={{
             display: "flex",
-            justifyContent: "space-between",
+            justifyContent: "flex-end",
+            gap: "0.5rem",
             width: "100%",
           }}
         >
-          <div>
-            {debugInfo && (
-              <small style={{ color: "#6c757d" }}>
-                Всего: {debugInfo.total}, В группах: {debugInfo.grouped}, Без
-                группы: {debugInfo.ungrouped}
-              </small>
-            )}
-          </div>
-          <div style={{ display: "flex", gap: "0.5rem" }}>
+          <button
+            className="btn btn-secondary"
+            onClick={onClose}
+            disabled={saving || creating}
+            type="button"
+          >
+            Отмена
+          </button>
+
+          {showCreateForm ? (
             <button
-              className="btn btn-secondary"
-              onClick={onClose}
-              disabled={saving || creating}
+              className="btn btn-success"
+              onClick={handleCreatePassword}
+              disabled={
+                creating ||
+                !newPassword.title ||
+                !newPassword.username ||
+                !newPassword.password
+              }
               type="button"
             >
-              Отмена
+              {creating ? (
+                <>
+                  <FaSpinner
+                    style={{
+                      marginRight: "0.5rem",
+                      animation: "spin 1s linear infinite",
+                    }}
+                  />
+                  Создание...
+                </>
+              ) : (
+                <>
+                  <FaSave style={{ marginRight: "0.5rem" }} />
+                  Создать пароль
+                </>
+              )}
             </button>
-
-            {showCreateForm ? (
-              <button
-                className="btn btn-success"
-                onClick={handleCreatePassword}
-                disabled={
-                  creating ||
-                  !newPassword.title ||
-                  !newPassword.username ||
-                  !newPassword.password
-                }
-                type="button"
-              >
-                {creating ? (
-                  <>
-                    <FaSpinner
-                      style={{
-                        marginRight: "0.5rem",
-                        animation: "spin 1s linear infinite",
-                      }}
-                    />
-                    Создание...
-                  </>
-                ) : (
-                  <>
-                    <FaSave style={{ marginRight: "0.5rem" }} />
-                    Создать пароль
-                  </>
-                )}
-              </button>
-            ) : (
-              <button
-                className="btn btn-primary"
-                onClick={handleSubmitExisting}
-                disabled={saving || selectedPasswordIds.length === 0}
-                type="button"
-              >
-                {saving ? (
-                  <>
-                    <FaSpinner
-                      style={{
-                        marginRight: "0.5rem",
-                        animation: "spin 1s linear infinite",
-                      }}
-                    />
-                    Добавление...
-                  </>
-                ) : (
-                  <>
-                    <FaSave style={{ marginRight: "0.5rem" }} />
-                    Добавить ({selectedPasswordIds.length})
-                  </>
-                )}
-              </button>
-            )}
-          </div>
+          ) : (
+            <button
+              className="btn btn-primary"
+              onClick={handleSubmitExisting}
+              disabled={saving || selectedPasswordIds.length === 0}
+              type="button"
+            >
+              {saving ? (
+                <>
+                  <FaSpinner
+                    style={{
+                      marginRight: "0.5rem",
+                      animation: "spin 1s linear infinite",
+                    }}
+                  />
+                  Добавление...
+                </>
+              ) : (
+                <>
+                  <FaSave style={{ marginRight: "0.5rem" }} />
+                  Добавить ({selectedPasswordIds.length})
+                </>
+              )}
+            </button>
+          )}
         </div>
       }
     >
@@ -965,17 +998,21 @@ const AddPasswordsToGroupModal = ({ groupId, onSave, onClose }) => {
               marginBottom: "1rem",
             }}
           />
-          <p>Загрузка доступных паролей...</p>
+          <p>Загрузка ваших паролей...</p>
         </div>
       ) : error ? (
         <div style={{ textAlign: "center", padding: "2rem" }}>
           <p style={{ color: "#dc3545", marginBottom: "1rem" }}>{error}</p>
           <button
             className="btn btn-secondary"
-            onClick={fetchUngroupedPasswords}
+            onClick={fetchAllPasswords}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.5rem",
+            }}
           >
-            <FaRefresh style={{ marginRight: "0.5rem" }} />
-            Попробовать снова
+            🔄 Попробовать снова
           </button>
         </div>
       ) : showCreateForm ? (
@@ -995,7 +1032,7 @@ const AddPasswordsToGroupModal = ({ groupId, onSave, onClose }) => {
               onClick={() => setShowCreateForm(false)}
               type="button"
             >
-              Назад к списку
+              ← Назад к списку
             </button>
           </div>
 
@@ -1019,10 +1056,12 @@ const AddPasswordsToGroupModal = ({ groupId, onSave, onClose }) => {
                 placeholder="Например: Gmail, Facebook..."
                 style={{
                   width: "100%",
-                  padding: "0.5rem",
+                  padding: "0.75rem",
                   border: "1px solid #ced4da",
                   borderRadius: "4px",
+                  fontSize: "1rem",
                 }}
+                autoFocus
               />
             </div>
 
@@ -1048,9 +1087,10 @@ const AddPasswordsToGroupModal = ({ groupId, onSave, onClose }) => {
                 placeholder="Имя пользователя или email"
                 style={{
                   width: "100%",
-                  padding: "0.5rem",
+                  padding: "0.75rem",
                   border: "1px solid #ced4da",
                   borderRadius: "4px",
+                  fontSize: "1rem",
                 }}
               />
             </div>
@@ -1077,9 +1117,10 @@ const AddPasswordsToGroupModal = ({ groupId, onSave, onClose }) => {
                 placeholder="Пароль"
                 style={{
                   width: "100%",
-                  padding: "0.5rem",
+                  padding: "0.75rem",
                   border: "1px solid #ced4da",
                   borderRadius: "4px",
+                  fontSize: "1rem",
                 }}
               />
             </div>
@@ -1103,9 +1144,10 @@ const AddPasswordsToGroupModal = ({ groupId, onSave, onClose }) => {
                 placeholder="https://example.com"
                 style={{
                   width: "100%",
-                  padding: "0.5rem",
+                  padding: "0.75rem",
                   border: "1px solid #ced4da",
                   borderRadius: "4px",
+                  fontSize: "1rem",
                 }}
               />
             </div>
@@ -1129,16 +1171,18 @@ const AddPasswordsToGroupModal = ({ groupId, onSave, onClose }) => {
                 rows="3"
                 style={{
                   width: "100%",
-                  padding: "0.5rem",
+                  padding: "0.75rem",
                   border: "1px solid #ced4da",
                   borderRadius: "4px",
+                  fontSize: "1rem",
+                  resize: "vertical",
                 }}
               />
             </div>
           </div>
         </div>
-      ) : ungroupedPasswords.length === 0 ? (
-        // Aucun mot de passe non groupé
+      ) : allPasswords.length === 0 ? (
+        // Aucun mot de passe
         <div style={{ textAlign: "center", padding: "2rem" }}>
           <FaKey size={40} color="#6c757d" style={{ marginBottom: "1rem" }} />
           <p
@@ -1148,7 +1192,7 @@ const AddPasswordsToGroupModal = ({ groupId, onSave, onClose }) => {
               marginBottom: "1rem",
             }}
           >
-            Все ваши пароли уже организованы в группы.
+            У вас пока нет паролей.
           </p>
           <small
             style={{
@@ -1157,53 +1201,21 @@ const AddPasswordsToGroupModal = ({ groupId, onSave, onClose }) => {
               display: "block",
             }}
           >
-            Создайте новые пароли или удалите их из других групп, чтобы добавить
-            их сюда.
+            Создайте свой первый пароль.
           </small>
 
-          {debugInfo && (
-            <div
-              style={{
-                backgroundColor: "#f8f9fa",
-                padding: "1rem",
-                borderRadius: "4px",
-                marginBottom: "1rem",
-                fontSize: "0.9rem",
-              }}
-            >
-              <strong>Информация:</strong>
-              <br />
-              Всего паролей: {debugInfo.total}
-              <br />В группах: {debugInfo.grouped}
-              <br />
-              Без группы: {debugInfo.ungrouped}
-            </div>
-          )}
-
-          <div
-            style={{ display: "flex", gap: "0.5rem", justifyContent: "center" }}
+          <button
+            className="btn btn-success"
+            onClick={() => setShowCreateForm(true)}
+            type="button"
+            style={{ fontSize: "1rem", padding: "0.75rem 1.5rem" }}
           >
-            <button
-              className="btn btn-success"
-              onClick={() => setShowCreateForm(true)}
-              type="button"
-            >
-              <FaPlus style={{ marginRight: "0.5rem" }} />
-              Создать новый пароль
-            </button>
-
-            <button
-              className="btn btn-secondary"
-              onClick={fetchUngroupedPasswords}
-              type="button"
-            >
-              <FaRefresh style={{ marginRight: "0.5rem" }} />
-              Обновить
-            </button>
-          </div>
+            <FaPlus style={{ marginRight: "0.5rem" }} />
+            Создать первый пароль
+          </button>
         </div>
       ) : (
-        // Liste des mots de passe existants
+        // Liste des mots de passe
         <div className="form-group">
           <div
             style={{
@@ -1214,7 +1226,7 @@ const AddPasswordsToGroupModal = ({ groupId, onSave, onClose }) => {
             }}
           >
             <label style={{ fontWeight: "bold", margin: 0 }}>
-              Отметьте пароли для включения в эту группу:
+              Выберите пароли для добавления в группу:
             </label>
             <button
               className="btn btn-success btn-sm"
@@ -1224,6 +1236,20 @@ const AddPasswordsToGroupModal = ({ groupId, onSave, onClose }) => {
               <FaPlus style={{ marginRight: "0.5rem" }} />
               Создать новый
             </button>
+          </div>
+
+          {/* Info */}
+          <div
+            style={{
+              backgroundColor: "#e3f2fd",
+              padding: "0.75rem",
+              borderRadius: "4px",
+              marginBottom: "1rem",
+              fontSize: "0.9rem",
+              color: "#1976d2",
+            }}
+          >
+            💡 Пароль может быть добавлен в несколько групп одновременно
           </div>
 
           {/* Barre de recherche */}
@@ -1306,6 +1332,15 @@ const AddPasswordsToGroupModal = ({ groupId, onSave, onClose }) => {
               {filteredPasswords.map((password) => {
                 const isSelected = selectedPasswordIds.includes(password._id);
 
+                // ✅ CORRIGÉ : Gestion many-to-many pour l'affichage des groupes
+                const hasGroups =
+                  password.groupIds && password.groupIds.length > 0;
+                const groupNames = hasGroups
+                  ? password.groupIds
+                      .map((group) => group.name || group)
+                      .join(", ")
+                  : null;
+
                 return (
                   <label
                     key={password._id}
@@ -1348,8 +1383,29 @@ const AddPasswordsToGroupModal = ({ groupId, onSave, onClose }) => {
                         Пользователь: {password.username}
                       </div>
                       {password.url && (
-                        <div style={{ color: "#007bff", fontSize: "0.8rem" }}>
+                        <div
+                          style={{
+                            color: "#007bff",
+                            fontSize: "0.8rem",
+                            marginBottom: "0.25rem",
+                          }}
+                        >
                           {password.url}
+                        </div>
+                      )}
+                      {/* ✅ CORRIGÉ : Affichage des groupes many-to-many */}
+                      {hasGroups && (
+                        <div
+                          style={{
+                            fontSize: "0.75rem",
+                            color: "#6c757d",
+                            backgroundColor: "#f8f9fa",
+                            padding: "0.25rem 0.5rem",
+                            borderRadius: "3px",
+                            display: "inline-block",
+                          }}
+                        >
+                          📁 В группах: {groupNames}
                         </div>
                       )}
                     </div>
