@@ -1,3 +1,179 @@
+// // // // // src/pages/GroupDetails.jsx
+
+// // // // import React, { useState, useEffect } from "react";
+// // // // import { useParams, Link } from "react-router-dom";
+// // // // import api from "../utils/api";
+// // // // import { toast } from "react-toastify";
+// // // // import {
+// // // //   FaPlus,
+// // // //   FaEdit,
+// // // //   FaTrash,
+// // // //   FaEye,
+// // // //   FaEyeSlash,
+// // // //   FaCopy,
+// // // //   FaFolder,
+// // // //   FaArrowLeft,
+// // // //   FaListUl, // Nouvelle icône
+// // // // } from "react-icons/fa";
+// // // // import PasswordModal from "../components/PasswordModal";
+// // // // import ConfirmModal from "../components/ConfirmModal";
+// // // // // Importez la nouvelle modale
+// // // // import AddPasswordsToGroupModal from "../components/AddPasswordsToGroupModal";
+
+// // // // const GroupDetails = () => {
+// // // //   const { id } = useParams();
+// // // //   const [group, setGroup] = useState(null);
+// // // //   const [passwords, setPasswords] = useState([]);
+// // // //   const [loading, setLoading] = useState(true);
+
+// // // //   // États pour les modales
+// // // //   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
+// // // //   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+// // // //   const [addPasswordsModalOpen, setAddPasswordsModalOpen] = useState(false); // État pour la nouvelle modale
+
+// // // //   const [currentPassword, setCurrentPassword] = useState(null);
+// // // //   const [showPasswordId, setShowPasswordId] = useState(null);
+
+// // // //   useEffect(() => {
+// // // //     fetchGroupDetails();
+// // // //   }, [id]);
+
+// // // //   const fetchGroupDetails = async () => {
+// // // //     setLoading(true);
+// // // //     try {
+// // // //       const res = await api.get(`/api/groups/${id}`);
+// // // //       setGroup(res.data);
+// // // //       setPasswords(res.data.passwords || []);
+// // // //     } catch (error) {
+// // // //       toast.error("Erreur lors du chargement des détails du groupe.");
+// // // //     } finally {
+// // // //       setLoading(false);
+// // // //     }
+// // // //   };
+
+// // // //   const handlePasswordsAdded = () => {
+// // // //     setAddPasswordsModalOpen(false);
+// // // //     fetchGroupDetails(); // Rafraîchir les données
+// // // //   };
+
+// // // //   // ... (vos autres fonctions : copyToClipboard, toggleShowPassword, etc. restent identiques)
+// // // //   const openAddModal = () => {
+// // // //     setCurrentPassword(null);
+// // // //     setPasswordModalOpen(true);
+// // // //   };
+
+// // // //   const openEditModal = (password) => {
+// // // //     setCurrentPassword(password);
+// // // //     setPasswordModalOpen(true);
+// // // //   };
+
+// // // //   const openDeleteModal = (password) => {
+// // // //     setCurrentPassword(password);
+// // // //     setConfirmModalOpen(true);
+// // // //   };
+
+// // // //   const handleSavePassword = async (passwordData) => {
+// // // //     try {
+// // // //       const dataToSend = { ...passwordData, groupId: id };
+// // // //       if (currentPassword && currentPassword._id) {
+// // // //         await api.put(`/api/passwords/${currentPassword._id}`, dataToSend);
+// // // //         toast.success("Mot de passe mis à jour.");
+// // // //       } else {
+// // // //         await api.post("/api/passwords", dataToSend);
+// // // //         toast.success("Mot de passe ajouté.");
+// // // //       }
+// // // //       fetchGroupDetails();
+// // // //       setPasswordModalOpen(false);
+// // // //     } catch (error) {
+// // // //       toast.error("Erreur lors de la sauvegarde du mot de passe.");
+// // // //     }
+// // // //   };
+
+// // // //   const handleDeletePassword = async () => {
+// // // //     try {
+// // // //       if (!currentPassword || !currentPassword._id) return;
+// // // //       await api.delete(`/api/passwords/${currentPassword._id}`);
+// // // //       toast.success("Mot de passe supprimé.");
+// // // //       fetchGroupDetails();
+// // // //       setConfirmModalOpen(false);
+// // // //     } catch (error) {
+// // // //       toast.error("Erreur lors de la suppression du mot de passe.");
+// // // //     }
+// // // //   };
+
+// // // //   if (loading) return <div className="text-center p-4">Chargement...</div>;
+// // // //   if (!group)
+// // // //     return (
+// // // //       <div className="text-center p-4">Groupe non trouvé ou accès refusé.</div>
+// // // //     );
+
+// // // //   return (
+// // // //     <div>
+// // // //       <Link to="/groups" className="btn btn-secondary mb-4">
+// // // //         <FaArrowLeft /> Retour aux groupes
+// // // //       </Link>
+
+// // // //       <div className="password-list-header">
+// // // //         <div className="flex items-center gap-3">
+// // // //           <FaFolder size={40} style={{ color: group.color }} />
+// // // //           <div>
+// // // //             <h1>{group.name}</h1>
+// // // //             <p className="subtitle">
+// // // //               {group.description || "Mots de passe de ce groupe"}
+// // // //             </p>
+// // // //           </div>
+// // // //         </div>
+// // // //         <div className="flex gap-2">
+// // // //           <button
+// // // //             className="btn btn-secondary"
+// // // //             onClick={() => setAddPasswordsModalOpen(true)}
+// // // //           >
+// // // //             <FaListUl /> Gérer les mots de passe
+// // // //           </button>
+// // // //           <button className="btn btn-primary" onClick={openAddModal}>
+// // // //             <FaPlus /> Créer un mot de passe
+// // // //           </button>
+// // // //         </div>
+// // // //       </div>
+
+// // // //       {/* Le reste de la page (la liste des mots de passe) reste identique */}
+// // // //       <div className="card" style={{ borderTop: `3px solid ${group.color}` }}>
+// // // //         {/* ... */}
+// // // //       </div>
+
+// // // //       {/* Modales */}
+// // // //       {passwordModalOpen && (
+// // // //         <PasswordModal
+// // // //           password={currentPassword || { groupId: id }}
+// // // //           onSave={handleSavePassword}
+// // // //           onClose={() => setPasswordModalOpen(false)}
+// // // //         />
+// // // //       )}
+
+// // // //       {confirmModalOpen && (
+// // // //         <ConfirmModal
+// // // //           title="Supprimer le mot de passe"
+// // // //           message={`Êtes-vous sûr de vouloir supprimer le mot de passe "${currentPassword?.title}" ?`}
+// // // //           confirmLabel="Supprimer"
+// // // //           onConfirm={handleDeletePassword}
+// // // //           onCancel={() => setConfirmModalOpen(false)}
+// // // //         />
+// // // //       )}
+
+// // // //       {/* Affichez la nouvelle modale ici */}
+// // // //       {addPasswordsModalOpen && (
+// // // //         <AddPasswordsToGroupModal
+// // // //           groupId={id}
+// // // //           onSave={handlePasswordsAdded}
+// // // //           onClose={() => setAddPasswordsModalOpen(false)}
+// // // //         />
+// // // //       )}
+// // // //     </div>
+// // // //   );
+// // // // };
+
+// // // // export default GroupDetails;
+
 // // // // src/pages/GroupDetails.jsx
 
 // // // import React, { useState, useEffect } from "react";
@@ -13,58 +189,107 @@
 // // //   FaCopy,
 // // //   FaFolder,
 // // //   FaArrowLeft,
-// // //   FaListUl, // Nouvelle icône
 // // // } from "react-icons/fa";
 // // // import PasswordModal from "../components/PasswordModal";
 // // // import ConfirmModal from "../components/ConfirmModal";
-// // // // Importez la nouvelle modale
-// // // import AddPasswordsToGroupModal from "../components/AddPasswordsToGroupModal";
+
+// // // // Composant pour une seule ligne de mot de passe
+// // // const PasswordRow = ({
+// // //   password,
+// // //   onEdit,
+// // //   onDelete,
+// // //   onCopy,
+// // //   onToggleShow,
+// // //   isVisible,
+// // // }) => (
+// // //   <div className="card password-card mb-3">
+// // //     <div className="card-body">
+// // //       <div className="password-card-header mb-3">
+// // //         <div className="password-info">
+// // //           <h3 className="password-title">{password.title}</h3>
+// // //           <p className="password-username">{password.username}</p>
+// // //         </div>
+// // //         <div className="password-actions">
+// // //           <button
+// // //             className="btn btn-sm btn-secondary"
+// // //             onClick={() => onToggleShow(password._id)}
+// // //           >
+// // //             {isVisible ? <FaEyeSlash /> : <FaEye />}
+// // //           </button>
+// // //           <button
+// // //             className="btn btn-sm btn-secondary"
+// // //             onClick={() => onCopy(password.password)}
+// // //           >
+// // //             <FaCopy />
+// // //           </button>
+// // //           <button
+// // //             className="btn btn-sm btn-secondary"
+// // //             onClick={() => onEdit(password)}
+// // //           >
+// // //             <FaEdit />
+// // //           </button>
+// // //           <button
+// // //             className="btn btn-sm btn-danger"
+// // //             onClick={() => onDelete(password)}
+// // //           >
+// // //             <FaTrash />
+// // //           </button>
+// // //         </div>
+// // //       </div>
+// // //       <div className="password-field">
+// // //         <div className="password-field-label">Passe:</div>
+// // //         <div
+// // //           className={`password-field-value ${
+// // //             !isVisible ? "password-hidden" : ""
+// // //           }`}
+// // //         >
+// // //           {password.password}
+// // //         </div>
+// // //       </div>
+// // //     </div>
+// // //   </div>
+// // // );
 
 // // // const GroupDetails = () => {
-// // //   const { id } = useParams();
+// // //   const { id: groupId } = useParams();
 // // //   const [group, setGroup] = useState(null);
-// // //   const [passwords, setPasswords] = useState([]);
+// // //   const [passwordsInGroup, setPasswordsInGroup] = useState([]);
+// // //   const [availablePasswords, setAvailablePasswords] = useState([]);
 // // //   const [loading, setLoading] = useState(true);
 
-// // //   // États pour les modales
-// // //   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
+// // //   // États pour les modales et la visibilité
+// // //   const [modalOpen, setModalOpen] = useState(false);
 // // //   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
-// // //   const [addPasswordsModalOpen, setAddPasswordsModalOpen] = useState(false); // État pour la nouvelle modale
-
 // // //   const [currentPassword, setCurrentPassword] = useState(null);
 // // //   const [showPasswordId, setShowPasswordId] = useState(null);
 
 // // //   useEffect(() => {
-// // //     fetchGroupDetails();
-// // //   }, [id]);
+// // //     fetchGroupData();
+// // //   }, [groupId]);
 
-// // //   const fetchGroupDetails = async () => {
-// // //     setLoading(true);
+// // //   const fetchGroupData = async () => {
 // // //     try {
-// // //       const res = await api.get(`/api/groups/${id}`);
+// // //       setLoading(true);
+// // //       const res = await api.get(`/api/groups/${groupId}`);
 // // //       setGroup(res.data);
-// // //       setPasswords(res.data.passwords || []);
+// // //       setPasswordsInGroup(res.data.passwords || []);
+// // //       setAvailablePasswords(res.data.availablePasswords || []);
 // // //     } catch (error) {
-// // //       toast.error("Erreur lors du chargement des détails du groupe.");
+// // //       toast.error("Erreur lors du chargement du groupe.");
 // // //     } finally {
 // // //       setLoading(false);
 // // //     }
 // // //   };
 
-// // //   const handlePasswordsAdded = () => {
-// // //     setAddPasswordsModalOpen(false);
-// // //     fetchGroupDetails(); // Rafraîchir les données
-// // //   };
-
-// // //   // ... (vos autres fonctions : copyToClipboard, toggleShowPassword, etc. restent identiques)
-// // //   const openAddModal = () => {
-// // //     setCurrentPassword(null);
-// // //     setPasswordModalOpen(true);
-// // //   };
+// // //   // Fonctions de gestion des mots de passe
+// // //   const copyToClipboard = (text) =>
+// // //     navigator.clipboard.writeText(text).then(() => toast.success("Copié !"));
+// // //   const toggleShowPassword = (id) =>
+// // //     setShowPasswordId((prev) => (prev === id ? null : id));
 
 // // //   const openEditModal = (password) => {
 // // //     setCurrentPassword(password);
-// // //     setPasswordModalOpen(true);
+// // //     setModalOpen(true);
 // // //   };
 
 // // //   const openDeleteModal = (password) => {
@@ -74,38 +299,37 @@
 
 // // //   const handleSavePassword = async (passwordData) => {
 // // //     try {
-// // //       const dataToSend = { ...passwordData, groupId: id };
-// // //       if (currentPassword && currentPassword._id) {
-// // //         await api.put(`/api/passwords/${currentPassword._id}`, dataToSend);
-// // //         toast.success("Mot de passe mis à jour.");
-// // //       } else {
-// // //         await api.post("/api/passwords", dataToSend);
-// // //         toast.success("Mot de passe ajouté.");
-// // //       }
-// // //       fetchGroupDetails();
-// // //       setPasswordModalOpen(false);
+// // //       await api.put(`/api/passwords/${currentPassword._id}`, passwordData);
+// // //       toast.success("Mot de passe mis à jour.");
+// // //       fetchGroupData();
+// // //       setModalOpen(false);
 // // //     } catch (error) {
-// // //       toast.error("Erreur lors de la sauvegarde du mot de passe.");
+// // //       toast.error("Erreur lors de la sauvegarde.");
 // // //     }
 // // //   };
 
 // // //   const handleDeletePassword = async () => {
 // // //     try {
-// // //       if (!currentPassword || !currentPassword._id) return;
 // // //       await api.delete(`/api/passwords/${currentPassword._id}`);
 // // //       toast.success("Mot de passe supprimé.");
-// // //       fetchGroupDetails();
+// // //       fetchGroupData();
 // // //       setConfirmModalOpen(false);
 // // //     } catch (error) {
-// // //       toast.error("Erreur lors de la suppression du mot de passe.");
+// // //       toast.error("Erreur lors de la suppression.");
+// // //     }
+// // //   };
+
+// // //   const handleAddPasswordToGroup = async (passwordId) => {
+// // //     try {
+// // //       await api.put(`/api/groups/${groupId}/add-password`, { passwordId });
+// // //       toast.success("Mot de passe ajouté au groupe !");
+// // //       fetchGroupData(); // Rafraîchit les deux listes
+// // //     } catch (error) {
+// // //       toast.error("Impossible d'ajouter le mot de passe.");
 // // //     }
 // // //   };
 
 // // //   if (loading) return <div className="text-center p-4">Chargement...</div>;
-// // //   if (!group)
-// // //     return (
-// // //       <div className="text-center p-4">Groupe non trouvé ou accès refusé.</div>
-// // //     );
 
 // // //   return (
 // // //     <div>
@@ -113,59 +337,98 @@
 // // //         <FaArrowLeft /> Retour aux groupes
 // // //       </Link>
 
-// // //       <div className="password-list-header">
+// // //       <div className="password-list-header mb-4">
 // // //         <div className="flex items-center gap-3">
-// // //           <FaFolder size={40} style={{ color: group.color }} />
+// // //           <FaFolder size={40} style={{ color: group?.color }} />
 // // //           <div>
-// // //             <h1>{group.name}</h1>
-// // //             <p className="subtitle">
-// // //               {group.description || "Mots de passe de ce groupe"}
-// // //             </p>
+// // //             <h1>{group?.name}</h1>
+// // //             <p className="subtitle">{group?.description}</p>
 // // //           </div>
-// // //         </div>
-// // //         <div className="flex gap-2">
-// // //           <button
-// // //             className="btn btn-secondary"
-// // //             onClick={() => setAddPasswordsModalOpen(true)}
-// // //           >
-// // //             <FaListUl /> Gérer les mots de passe
-// // //           </button>
-// // //           <button className="btn btn-primary" onClick={openAddModal}>
-// // //             <FaPlus /> Créer un mot de passe
-// // //           </button>
 // // //         </div>
 // // //       </div>
 
-// // //       {/* Le reste de la page (la liste des mots de passe) reste identique */}
-// // //       <div className="card" style={{ borderTop: `3px solid ${group.color}` }}>
-// // //         {/* ... */}
+// // //       {/* Section des mots de passe dans le groupe */}
+// // //       <div
+// // //         className="card mb-4"
+// // //         style={{ borderTop: `3px solid ${group?.color}` }}
+// // //       >
+// // //         <div className="card-header">
+// // //           <h2>Mots de passe dans ce groupe ({passwordsInGroup.length})</h2>
+// // //         </div>
+// // //         <div className="card-body">
+// // //           {passwordsInGroup.length > 0 ? (
+// // //             passwordsInGroup.map((p) => (
+// // //               <PasswordRow
+// // //                 key={p._id}
+// // //                 password={p}
+// // //                 onEdit={openEditModal}
+// // //                 onDelete={openDeleteModal}
+// // //                 onCopy={copyToClipboard}
+// // //                 onToggleShow={toggleShowPassword}
+// // //                 isVisible={showPasswordId === p._id}
+// // //               />
+// // //             ))
+// // //           ) : (
+// // //             <p>Ce groupe ne contient aucun mot de passe.</p>
+// // //           )}
+// // //         </div>
+// // //       </div>
+
+// // //       {/* Section pour ajouter des mots de passe existants */}
+// // //       <div className="card">
+// // //         <div className="card-header">
+// // //           <h2>Mots de passe disponibles ({availablePasswords.length})</h2>
+// // //         </div>
+// // //         <div className="card-body">
+// // //           {availablePasswords.length > 0 ? (
+// // //             <div className="table-container">
+// // //               <table>
+// // //                 <thead>
+// // //                   <tr>
+// // //                     <th>Titre</th>
+// // //                     <th>Nom d'utilisateur</th>
+// // //                     <th>Action</th>
+// // //                   </tr>
+// // //                 </thead>
+// // //                 <tbody>
+// // //                   {availablePasswords.map((p) => (
+// // //                     <tr key={p._id}>
+// // //                       <td>{p.title}</td>
+// // //                       <td>{p.username}</td>
+// // //                       <td>
+// // //                         <button
+// // //                           className="btn btn-sm btn-primary"
+// // //                           onClick={() => handleAddPasswordToGroup(p._id)}
+// // //                         >
+// // //                           <FaPlus /> Ajouter
+// // //                         </button>
+// // //                       </td>
+// // //                     </tr>
+// // //                   ))}
+// // //                 </tbody>
+// // //               </table>
+// // //             </div>
+// // //           ) : (
+// // //             <p>Aucun autre mot de passe n'est disponible pour être ajouté.</p>
+// // //           )}
+// // //         </div>
 // // //       </div>
 
 // // //       {/* Modales */}
-// // //       {passwordModalOpen && (
+// // //       {modalOpen && (
 // // //         <PasswordModal
-// // //           password={currentPassword || { groupId: id }}
+// // //           password={currentPassword}
 // // //           onSave={handleSavePassword}
-// // //           onClose={() => setPasswordModalOpen(false)}
+// // //           onClose={() => setModalOpen(false)}
 // // //         />
 // // //       )}
-
 // // //       {confirmModalOpen && (
 // // //         <ConfirmModal
 // // //           title="Supprimer le mot de passe"
-// // //           message={`Êtes-vous sûr de vouloir supprimer le mot de passe "${currentPassword?.title}" ?`}
+// // //           message={`Voulez-vous vraiment supprimer "${currentPassword?.title}" ? Cette action est irréversible.`}
 // // //           confirmLabel="Supprimer"
 // // //           onConfirm={handleDeletePassword}
 // // //           onCancel={() => setConfirmModalOpen(false)}
-// // //         />
-// // //       )}
-
-// // //       {/* Affichez la nouvelle modale ici */}
-// // //       {addPasswordsModalOpen && (
-// // //         <AddPasswordsToGroupModal
-// // //           groupId={id}
-// // //           onSave={handlePasswordsAdded}
-// // //           onClose={() => setAddPasswordsModalOpen(false)}
 // // //         />
 // // //       )}
 // // //     </div>
@@ -193,7 +456,7 @@
 // // import PasswordModal from "../components/PasswordModal";
 // // import ConfirmModal from "../components/ConfirmModal";
 
-// // // Composant pour une seule ligne de mot de passe
+// // // Компонент для одной строки пароля
 // // const PasswordRow = ({
 // //   password,
 // //   onEdit,
@@ -237,7 +500,7 @@
 // //         </div>
 // //       </div>
 // //       <div className="password-field">
-// //         <div className="password-field-label">Passe:</div>
+// //         <div className="password-field-label">Пароль:</div>
 // //         <div
 // //           className={`password-field-value ${
 // //             !isVisible ? "password-hidden" : ""
@@ -257,7 +520,7 @@
 // //   const [availablePasswords, setAvailablePasswords] = useState([]);
 // //   const [loading, setLoading] = useState(true);
 
-// //   // États pour les modales et la visibilité
+// //   // Состояния для модальных окон и видимости
 // //   const [modalOpen, setModalOpen] = useState(false);
 // //   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
 // //   const [currentPassword, setCurrentPassword] = useState(null);
@@ -275,15 +538,17 @@
 // //       setPasswordsInGroup(res.data.passwords || []);
 // //       setAvailablePasswords(res.data.availablePasswords || []);
 // //     } catch (error) {
-// //       toast.error("Erreur lors du chargement du groupe.");
+// //       toast.error("Ошибка при загрузке группы.");
 // //     } finally {
 // //       setLoading(false);
 // //     }
 // //   };
 
-// //   // Fonctions de gestion des mots de passe
+// //   // Функции управления паролями
 // //   const copyToClipboard = (text) =>
-// //     navigator.clipboard.writeText(text).then(() => toast.success("Copié !"));
+// //     navigator.clipboard
+// //       .writeText(text)
+// //       .then(() => toast.success("Скопировано!"));
 // //   const toggleShowPassword = (id) =>
 // //     setShowPasswordId((prev) => (prev === id ? null : id));
 
@@ -300,41 +565,41 @@
 // //   const handleSavePassword = async (passwordData) => {
 // //     try {
 // //       await api.put(`/api/passwords/${currentPassword._id}`, passwordData);
-// //       toast.success("Mot de passe mis à jour.");
+// //       toast.success("Пароль обновлен.");
 // //       fetchGroupData();
 // //       setModalOpen(false);
 // //     } catch (error) {
-// //       toast.error("Erreur lors de la sauvegarde.");
+// //       toast.error("Ошибка при сохранении.");
 // //     }
 // //   };
 
 // //   const handleDeletePassword = async () => {
 // //     try {
 // //       await api.delete(`/api/passwords/${currentPassword._id}`);
-// //       toast.success("Mot de passe supprimé.");
+// //       toast.success("Пароль удален.");
 // //       fetchGroupData();
 // //       setConfirmModalOpen(false);
 // //     } catch (error) {
-// //       toast.error("Erreur lors de la suppression.");
+// //       toast.error("Ошибка при удалении.");
 // //     }
 // //   };
 
 // //   const handleAddPasswordToGroup = async (passwordId) => {
 // //     try {
 // //       await api.put(`/api/groups/${groupId}/add-password`, { passwordId });
-// //       toast.success("Mot de passe ajouté au groupe !");
-// //       fetchGroupData(); // Rafraîchit les deux listes
+// //       toast.success("Пароль добавлен в группу!");
+// //       fetchGroupData(); // Обновляет оба списка
 // //     } catch (error) {
-// //       toast.error("Impossible d'ajouter le mot de passe.");
+// //       toast.error("Невозможно добавить пароль.");
 // //     }
 // //   };
 
-// //   if (loading) return <div className="text-center p-4">Chargement...</div>;
+// //   if (loading) return <div className="text-center p-4">Загрузка...</div>;
 
 // //   return (
 // //     <div>
 // //       <Link to="/groups" className="btn btn-secondary mb-4">
-// //         <FaArrowLeft /> Retour aux groupes
+// //         <FaArrowLeft /> Вернуться к группам
 // //       </Link>
 
 // //       <div className="password-list-header mb-4">
@@ -347,13 +612,13 @@
 // //         </div>
 // //       </div>
 
-// //       {/* Section des mots de passe dans le groupe */}
+// //       {/* Секция паролей в группе */}
 // //       <div
 // //         className="card mb-4"
 // //         style={{ borderTop: `3px solid ${group?.color}` }}
 // //       >
 // //         <div className="card-header">
-// //           <h2>Mots de passe dans ce groupe ({passwordsInGroup.length})</h2>
+// //           <h2>Пароли в этой группе ({passwordsInGroup.length})</h2>
 // //         </div>
 // //         <div className="card-body">
 // //           {passwordsInGroup.length > 0 ? (
@@ -369,15 +634,15 @@
 // //               />
 // //             ))
 // //           ) : (
-// //             <p>Ce groupe ne contient aucun mot de passe.</p>
+// //             <p>Эта группа не содержит паролей.</p>
 // //           )}
 // //         </div>
 // //       </div>
 
-// //       {/* Section pour ajouter des mots de passe existants */}
+// //       {/* Секция для добавления существующих паролей */}
 // //       <div className="card">
 // //         <div className="card-header">
-// //           <h2>Mots de passe disponibles ({availablePasswords.length})</h2>
+// //           <h2>Доступные пароли ({availablePasswords.length})</h2>
 // //         </div>
 // //         <div className="card-body">
 // //           {availablePasswords.length > 0 ? (
@@ -385,9 +650,9 @@
 // //               <table>
 // //                 <thead>
 // //                   <tr>
-// //                     <th>Titre</th>
-// //                     <th>Nom d'utilisateur</th>
-// //                     <th>Action</th>
+// //                     <th>Название</th>
+// //                     <th>Имя пользователя</th>
+// //                     <th>Действие</th>
 // //                   </tr>
 // //                 </thead>
 // //                 <tbody>
@@ -400,7 +665,7 @@
 // //                           className="btn btn-sm btn-primary"
 // //                           onClick={() => handleAddPasswordToGroup(p._id)}
 // //                         >
-// //                           <FaPlus /> Ajouter
+// //                           <FaPlus /> Добавить
 // //                         </button>
 // //                       </td>
 // //                     </tr>
@@ -409,12 +674,12 @@
 // //               </table>
 // //             </div>
 // //           ) : (
-// //             <p>Aucun autre mot de passe n'est disponible pour être ajouté.</p>
+// //             <p>Нет других паролей, доступных для добавления.</p>
 // //           )}
 // //         </div>
 // //       </div>
 
-// //       {/* Modales */}
+// //       {/* Модальные окна */}
 // //       {modalOpen && (
 // //         <PasswordModal
 // //           password={currentPassword}
@@ -424,9 +689,9 @@
 // //       )}
 // //       {confirmModalOpen && (
 // //         <ConfirmModal
-// //           title="Supprimer le mot de passe"
-// //           message={`Voulez-vous vraiment supprimer "${currentPassword?.title}" ? Cette action est irréversible.`}
-// //           confirmLabel="Supprimer"
+// //           title="Удалить пароль"
+// //           message={`Вы действительно хотите удалить "${currentPassword?.title}"? Это действие необратимо.`}
+// //           confirmLabel="Удалить"
 // //           onConfirm={handleDeletePassword}
 // //           onCancel={() => setConfirmModalOpen(false)}
 // //         />
@@ -437,313 +702,177 @@
 
 // // export default GroupDetails;
 
-// // src/pages/GroupDetails.jsx
-
-// import React, { useState, useEffect } from "react";
+// import React, { useState, useEffect, useCallback } from "react";
 // import { useParams, Link } from "react-router-dom";
 // import api from "../utils/api";
 // import { toast } from "react-toastify";
-// import {
-//   FaPlus,
-//   FaEdit,
-//   FaTrash,
-//   FaEye,
-//   FaEyeSlash,
-//   FaCopy,
-//   FaFolder,
-//   FaArrowLeft,
-// } from "react-icons/fa";
-// import PasswordModal from "../components/PasswordModal";
-// import ConfirmModal from "../components/ConfirmModal";
+// import { FaPlus, FaArrowLeft } from "react-icons/fa";
+// import PasswordList from "../components/PasswordList1";
+// import AddPasswordsToGroupModal from "../components/AddPasswordsToGroupModal";
 
-// // Компонент для одной строки пароля
-// const PasswordRow = ({
-//   password,
-//   onEdit,
-//   onDelete,
-//   onCopy,
-//   onToggleShow,
-//   isVisible,
-// }) => (
-//   <div className="card password-card mb-3">
-//     <div className="card-body">
-//       <div className="password-card-header mb-3">
-//         <div className="password-info">
-//           <h3 className="password-title">{password.title}</h3>
-//           <p className="password-username">{password.username}</p>
-//         </div>
-//         <div className="password-actions">
-//           <button
-//             className="btn btn-sm btn-secondary"
-//             onClick={() => onToggleShow(password._id)}
-//           >
-//             {isVisible ? <FaEyeSlash /> : <FaEye />}
-//           </button>
-//           <button
-//             className="btn btn-sm btn-secondary"
-//             onClick={() => onCopy(password.password)}
-//           >
-//             <FaCopy />
-//           </button>
-//           <button
-//             className="btn btn-sm btn-secondary"
-//             onClick={() => onEdit(password)}
-//           >
-//             <FaEdit />
-//           </button>
-//           <button
-//             className="btn btn-sm btn-danger"
-//             onClick={() => onDelete(password)}
-//           >
-//             <FaTrash />
-//           </button>
-//         </div>
-//       </div>
-//       <div className="password-field">
-//         <div className="password-field-label">Пароль:</div>
-//         <div
-//           className={`password-field-value ${
-//             !isVisible ? "password-hidden" : ""
-//           }`}
-//         >
-//           {password.password}
-//         </div>
-//       </div>
-//     </div>
-//   </div>
-// );
+// // Предполагается, что у вас есть AuthContext для получения данных о текущем пользователе
+// // import { useAuth } from '../context/AuthContext';
 
 // const GroupDetails = () => {
-//   const { id: groupId } = useParams();
+//   const { id } = useParams(); // ID группы из URL
 //   const [group, setGroup] = useState(null);
-//   const [passwordsInGroup, setPasswordsInGroup] = useState([]);
-//   const [availablePasswords, setAvailablePasswords] = useState([]);
 //   const [loading, setLoading] = useState(true);
+//   const [isAddPasswordModalOpen, setIsAddPasswordModalOpen] = useState(false);
 
-//   // Состояния для модальных окон и видимости
-//   const [modalOpen, setModalOpen] = useState(false);
-//   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
-//   const [currentPassword, setCurrentPassword] = useState(null);
-//   const [showPasswordId, setShowPasswordId] = useState(null);
-
+//   // --- ВАЖНО: Получите данные о текущем пользователе из вашего контекста авторизации ---
+//   // const { user: currentUser } = useAuth();
+//   // Временное решение для примера. Замените это на реальные данные!
+//   const [currentUser, setCurrentUser] = useState(null);
 //   useEffect(() => {
-//     fetchGroupData();
-//   }, [groupId]);
+//     const fetchMe = async () => {
+//       try {
+//         const res = await api.get("/api/auth/me");
+//         setCurrentUser(res.data);
+//       } catch (error) {
+//         console.error("Не удалось получить данные пользователя");
+//       }
+//     };
+//     fetchMe();
+//   }, []);
+//   // -----------------------------------------------------------------------------------
 
-//   const fetchGroupData = async () => {
+//   const fetchGroupDetails = useCallback(async () => {
 //     try {
-//       setLoading(true);
-//       const res = await api.get(`/api/groups/${groupId}`);
+//       const res = await api.get(`/api/groups/${id}`);
 //       setGroup(res.data);
-//       setPasswordsInGroup(res.data.passwords || []);
-//       setAvailablePasswords(res.data.availablePasswords || []);
 //     } catch (error) {
-//       toast.error("Ошибка при загрузке группы.");
+//       toast.error(error.response?.data?.msg || "Ошибка загрузки группы.");
 //     } finally {
 //       setLoading(false);
 //     }
+//   }, [id]);
+
+//   useEffect(() => {
+//     fetchGroupDetails();
+//   }, [fetchGroupDetails]);
+
+//   const handlePasswordsAdded = () => {
+//     setIsAddPasswordModalOpen(false);
+//     fetchGroupDetails(); // Обновляем данные после добавления
 //   };
 
-//   // Функции управления паролями
-//   const copyToClipboard = (text) =>
-//     navigator.clipboard
-//       .writeText(text)
-//       .then(() => toast.success("Скопировано!"));
-//   const toggleShowPassword = (id) =>
-//     setShowPasswordId((prev) => (prev === id ? null : id));
+//   if (loading || !currentUser) {
+//     return <div className="container">Загрузка...</div>;
+//   }
 
-//   const openEditModal = (password) => {
-//     setCurrentPassword(password);
-//     setModalOpen(true);
-//   };
+//   if (!group) {
+//     return <div className="container">Группа не найдена.</div>;
+//   }
 
-//   const openDeleteModal = (password) => {
-//     setCurrentPassword(password);
-//     setConfirmModalOpen(true);
-//   };
-
-//   const handleSavePassword = async (passwordData) => {
-//     try {
-//       await api.put(`/api/passwords/${currentPassword._id}`, passwordData);
-//       toast.success("Пароль обновлен.");
-//       fetchGroupData();
-//       setModalOpen(false);
-//     } catch (error) {
-//       toast.error("Ошибка при сохранении.");
-//     }
-//   };
-
-//   const handleDeletePassword = async () => {
-//     try {
-//       await api.delete(`/api/passwords/${currentPassword._id}`);
-//       toast.success("Пароль удален.");
-//       fetchGroupData();
-//       setConfirmModalOpen(false);
-//     } catch (error) {
-//       toast.error("Ошибка при удалении.");
-//     }
-//   };
-
-//   const handleAddPasswordToGroup = async (passwordId) => {
-//     try {
-//       await api.put(`/api/groups/${groupId}/add-password`, { passwordId });
-//       toast.success("Пароль добавлен в группу!");
-//       fetchGroupData(); // Обновляет оба списка
-//     } catch (error) {
-//       toast.error("Невозможно добавить пароль.");
-//     }
-//   };
-
-//   if (loading) return <div className="text-center p-4">Загрузка...</div>;
+//   // Определяем, может ли пользователь редактировать группу
+//   const canEditGroup =
+//     group.ownerId?._id === currentUser._id || currentUser.role === "admin";
 
 //   return (
-//     <div>
-//       <Link to="/groups" className="btn btn-secondary mb-4">
-//         <FaArrowLeft /> Вернуться к группам
-//       </Link>
+//     <div className="container">
+//       {isAddPasswordModalOpen && (
+//         <AddPasswordsToGroupModal
+//           groupId={id}
+//           onClose={() => setIsAddPasswordModalOpen(false)}
+//           onSave={handlePasswordsAdded}
+//         />
+//       )}
 
-//       <div className="password-list-header mb-4">
-//         <div className="flex items-center gap-3">
-//           <FaFolder size={40} style={{ color: group?.color }} />
-//           <div>
-//             <h1>{group?.name}</h1>
-//             <p className="subtitle">{group?.description}</p>
+//       <div className="page-header">
+//         <div>
+//           <Link to="/groups" className="back-link">
+//             <FaArrowLeft /> Назад к группам
+//           </Link>
+//           <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
+//             <span
+//               className="group-color-indicator"
+//               style={{ backgroundColor: group.color }}
+//             ></span>
+//             <h1>{group.name}</h1>
 //           </div>
-//         </div>
-//       </div>
-
-//       {/* Секция паролей в группе */}
-//       <div
-//         className="card mb-4"
-//         style={{ borderTop: `3px solid ${group?.color}` }}
-//       >
-//         <div className="card-header">
-//           <h2>Пароли в этой группе ({passwordsInGroup.length})</h2>
-//         </div>
-//         <div className="card-body">
-//           {passwordsInGroup.length > 0 ? (
-//             passwordsInGroup.map((p) => (
-//               <PasswordRow
-//                 key={p._id}
-//                 password={p}
-//                 onEdit={openEditModal}
-//                 onDelete={openDeleteModal}
-//                 onCopy={copyToClipboard}
-//                 onToggleShow={toggleShowPassword}
-//                 isVisible={showPasswordId === p._id}
-//               />
-//             ))
-//           ) : (
-//             <p>Эта группа не содержит паролей.</p>
+//           {group.description && (
+//             <p className="text-muted">{group.description}</p>
 //           )}
 //         </div>
+
+//         {/* Кнопка "Добавить пароли" отображается только для владельца или админа */}
+//         {canEditGroup && (
+//           <button
+//             className="btn btn-primary"
+//             onClick={() => setIsAddPasswordModalOpen(true)}
+//           >
+//             <FaPlus /> Добавить пароли
+//           </button>
+//         )}
 //       </div>
 
-//       {/* Секция для добавления существующих паролей */}
-//       <div className="card">
-//         <div className="card-header">
-//           <h2>Доступные пароли ({availablePasswords.length})</h2>
-//         </div>
-//         <div className="card-body">
-//           {availablePasswords.length > 0 ? (
-//             <div className="table-container">
-//               <table>
-//                 <thead>
-//                   <tr>
-//                     <th>Название</th>
-//                     <th>Имя пользователя</th>
-//                     <th>Действие</th>
-//                   </tr>
-//                 </thead>
-//                 <tbody>
-//                   {availablePasswords.map((p) => (
-//                     <tr key={p._id}>
-//                       <td>{p.title}</td>
-//                       <td>{p.username}</td>
-//                       <td>
-//                         <button
-//                           className="btn btn-sm btn-primary"
-//                           onClick={() => handleAddPasswordToGroup(p._id)}
-//                         >
-//                           <FaPlus /> Добавить
-//                         </button>
-//                       </td>
-//                     </tr>
-//                   ))}
-//                 </tbody>
-//               </table>
-//             </div>
-//           ) : (
-//             <p>Нет других паролей, доступных для добавления.</p>
-//           )}
-//         </div>
-//       </div>
+//       <hr />
 
-//       {/* Модальные окна */}
-//       {modalOpen && (
-//         <PasswordModal
-//           password={currentPassword}
-//           onSave={handleSavePassword}
-//           onClose={() => setModalOpen(false)}
-//         />
-//       )}
-//       {confirmModalOpen && (
-//         <ConfirmModal
-//           title="Удалить пароль"
-//           message={`Вы действительно хотите удалить "${currentPassword?.title}"? Это действие необратимо.`}
-//           confirmLabel="Удалить"
-//           onConfirm={handleDeletePassword}
-//           onCancel={() => setConfirmModalOpen(false)}
-//         />
-//       )}
+//       <h3>Пароли в этой группе ({group.passwords.length})</h3>
+
+//       <PasswordList
+//         passwords={group.passwords}
+//         refreshPasswords={fetchGroupDetails}
+//       />
 //     </div>
 //   );
 // };
 
 // export default GroupDetails;
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useReducer } from "react";
 import { useParams, Link } from "react-router-dom";
 import api from "../utils/api";
 import { toast } from "react-toastify";
-import { FaPlus, FaArrowLeft } from "react-icons/fa";
+import {
+  FaPlus,
+  FaArrowLeft,
+  FaSpinner,
+  FaExclamationTriangle,
+} from "react-icons/fa";
+import { useAuth } from "../context/AuthContext";
+
+// Les seuls composants de modale/liste importés ici
 import PasswordList from "../components/PasswordList1";
 import AddPasswordsToGroupModal from "../components/AddPasswordsToGroupModal";
 
-// Предполагается, что у вас есть AuthContext для получения данных о текущем пользователе
-// import { useAuth } from '../context/AuthContext';
+// Le reducer ne gère que l'état de la page, y compris la modale "Ajouter"
+const initialState = {
+  group: null,
+  loading: true,
+  error: null,
+  isAddModalOpen: false,
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "FETCH_START":
+      return { ...state, loading: true, error: null };
+    case "FETCH_SUCCESS":
+      return { ...state, loading: false, group: action.payload };
+    case "FETCH_ERROR":
+      return { ...state, loading: false, error: action.payload };
+    case "TOGGLE_ADD_MODAL":
+      return { ...state, isAddModalOpen: !state.isAddModalOpen };
+    default:
+      throw new Error();
+  }
+}
 
 const GroupDetails = () => {
-  const { id } = useParams(); // ID группы из URL
-  const [group, setGroup] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [isAddPasswordModalOpen, setIsAddPasswordModalOpen] = useState(false);
-
-  // --- ВАЖНО: Получите данные о текущем пользователе из вашего контекста авторизации ---
-  // const { user: currentUser } = useAuth();
-  // Временное решение для примера. Замените это на реальные данные!
-  const [currentUser, setCurrentUser] = useState(null);
-  useEffect(() => {
-    const fetchMe = async () => {
-      try {
-        const res = await api.get("/api/auth/me");
-        setCurrentUser(res.data);
-      } catch (error) {
-        console.error("Не удалось получить данные пользователя");
-      }
-    };
-    fetchMe();
-  }, []);
-  // -----------------------------------------------------------------------------------
+  const { id } = useParams();
+  const { user: currentUser } = useAuth();
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const fetchGroupDetails = useCallback(async () => {
+    dispatch({ type: "FETCH_START" });
     try {
       const res = await api.get(`/api/groups/${id}`);
-      setGroup(res.data);
+      dispatch({ type: "FETCH_SUCCESS", payload: res.data });
     } catch (error) {
-      toast.error(error.response?.data?.msg || "Ошибка загрузки группы.");
-    } finally {
-      setLoading(false);
+      const errorMessage =
+        error.response?.data?.msg || "Erreur de chargement du groupe.";
+      dispatch({ type: "FETCH_ERROR", payload: errorMessage });
     }
   }, [id]);
 
@@ -752,28 +881,36 @@ const GroupDetails = () => {
   }, [fetchGroupDetails]);
 
   const handlePasswordsAdded = () => {
-    setIsAddPasswordModalOpen(false);
-    fetchGroupDetails(); // Обновляем данные после добавления
+    dispatch({ type: "TOGGLE_ADD_MODAL" });
+    fetchGroupDetails();
   };
 
-  if (loading || !currentUser) {
-    return <div className="container">Загрузка...</div>;
-  }
+  if (state.loading)
+    return (
+      <div className="container text-center">
+        <FaSpinner className="spinner" />
+      </div>
+    );
+  if (state.error)
+    return (
+      <div className="container text-center">
+        <FaExclamationTriangle size={30} />
+        <p>Erreur: {state.error}</p>
+      </div>
+    );
 
-  if (!group) {
-    return <div className="container">Группа не найдена.</div>;
-  }
-
-  // Определяем, может ли пользователь редактировать группу
+  const { group } = state;
   const canEditGroup =
-    group.ownerId?._id === currentUser._id || currentUser.role === "admin";
+    currentUser &&
+    (group.ownerId?._id === currentUser._id || currentUser.role === "admin");
 
   return (
     <div className="container">
-      {isAddPasswordModalOpen && (
+      {/* Cette page ne gère que la modale d'AJOUT, pas de suppression */}
+      {state.isAddModalOpen && (
         <AddPasswordsToGroupModal
           groupId={id}
-          onClose={() => setIsAddPasswordModalOpen(false)}
+          onClose={() => dispatch({ type: "TOGGLE_ADD_MODAL" })}
           onSave={handlePasswordsAdded}
         />
       )}
@@ -783,35 +920,23 @@ const GroupDetails = () => {
           <Link to="/groups" className="back-link">
             <FaArrowLeft /> Назад к группам
           </Link>
-          <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
-            <span
-              className="group-color-indicator"
-              style={{ backgroundColor: group.color }}
-            ></span>
-            <h1>{group.name}</h1>
-          </div>
-          {group.description && (
-            <p className="text-muted">{group.description}</p>
-          )}
+          <h1>{group.name}</h1>
         </div>
-
-        {/* Кнопка "Добавить пароли" отображается только для владельца или админа */}
         {canEditGroup && (
           <button
             className="btn btn-primary"
-            onClick={() => setIsAddPasswordModalOpen(true)}
+            onClick={() => dispatch({ type: "TOGGLE_ADD_MODAL" })}
           >
             <FaPlus /> Добавить пароли
           </button>
         )}
       </div>
-
       <hr />
+      <h3>Пароли в этой группе ({group.passwords?.length || 0})</h3>
 
-      <h3>Пароли в этой группе ({group.passwords.length})</h3>
-
+      {/* On passe la liste des mots de passe au composant enfant */}
       <PasswordList
-        passwords={group.passwords}
+        passwords={group.passwords || []}
         refreshPasswords={fetchGroupDetails}
       />
     </div>
