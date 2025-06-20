@@ -53,7 +53,8 @@
 //     (password) =>
 //       password.title.toLowerCase().includes(search.toLowerCase()) ||
 //       password.username.toLowerCase().includes(search.toLowerCase()) ||
-//       password.url.toLowerCase().includes(search.toLowerCase())
+//       (password.url &&
+//         password.url.toLowerCase().includes(search.toLowerCase()))
 //   );
 
 //   // Показать/скрыть пароль
@@ -64,14 +65,6 @@
 //       setShowPasswordId(id);
 //     }
 //   };
-
-//   // Копировать в буфер обмена
-//   //   const copyToClipboard = (text) => {
-//   //     navigator.clipboard
-//   //       .writeText(text)
-//   //       .then(() => toast.success("Скопировано в буфер обмена!"))
-//   //       .catch(() => toast.error("Ошибка при копировании"));
-//   //   };
 
 //   // Копировать в буфер обмена
 //   const copyToClipboard = (text) => {
@@ -116,6 +109,7 @@
 //       }
 //     }
 //   };
+
 //   // Открыть модальное окно для добавления пароля
 //   const openAddModal = () => {
 //     setCurrentPassword(null);
@@ -141,26 +135,6 @@
 //   };
 
 //   // Обработать добавление или изменение пароля
-//   // const handleSavePassword = async (passwordData) => {
-//   //   try {
-//   //     if (currentPassword) {
-//   //       // Обновление
-//   //       await api.put(`/api/passwords/${currentPassword._id}`, passwordData);
-//   //       toast.success("Пароль успешно обновлен");
-//   //     } else {
-//   //       // Добавление
-//   //       await api.post("/api/passwords", passwordData);
-//   //       toast.success("Пароль успешно добавлен");
-//   //     }
-
-//   //     fetchPasswords();
-//   //     setModalOpen(false);
-//   //   } catch (error) {
-//   //     toast.error("Ошибка при сохранении пароля");
-//   //     console.error(error);
-//   //   }
-//   // };
-
 //   const handleSavePassword = async (passwordData) => {
 //     try {
 //       if (currentPassword && currentPassword._id) {
@@ -199,32 +173,15 @@
 //   };
 
 //   // Обработать удаление пароля
-//   // const handleDeletePassword = async () => {
-//   //   try {
-//   //     await api.delete(`/api/passwords/${currentPassword._id}`);
-
-//   //     toast.success("Пароль успешно удален");
-//   //     fetchPasswords();
-//   //     setConfirmModalOpen(false);
-//   //   } catch (error) {
-//   //     toast.error("Ошибка при удалении пароля");
-//   //     console.error(error);
-//   //   }
-//   // };
-
-//   // Обработать удаление пароля
 //   const handleDeletePassword = async () => {
 //     try {
 //       // Vérifier que currentPassword existe et a un ID
-//       if (!currentPassword || (!currentPassword._id && !currentPassword._id)) {
+//       if (!currentPassword || !currentPassword._id) {
 //         toast.error("Ошибка: ID пароля не найден");
 //         return;
 //       }
 
-//       // Utiliser _id si disponible, sinon id
-//       const passwordId = currentPassword._id || currentPassword._id;
-
-//       await api.delete(`/api/passwords/${passwordId}`);
+//       await api.delete(`/api/passwords/${currentPassword._id}`);
 
 //       toast.success("Пароль успешно удален");
 //       fetchPasswords();
@@ -234,6 +191,7 @@
 //       console.error(error);
 //     }
 //   };
+
 //   return (
 //     <div>
 //       <div className="password-list-header">
@@ -360,9 +318,7 @@
 //                         : "Доступно вам"}
 //                       {password.sharedWith &&
 //                         password.sharedWith.length > 0 &&
-//                         " • Доступно " +
-//                           password.sharedWith.length +
-//                           " пользователям"}
+//                         ` • Доступно ${password.sharedWith.length} пользователям`}
 //                     </small>
 //                   </div>
 //                 </div>
@@ -412,6 +368,7 @@
 // };
 
 // export default PasswordList;
+
 import React, { useState, useEffect } from "react";
 import api from "../utils/api";
 import { toast } from "react-toastify";
@@ -607,7 +564,8 @@ const PasswordList = () => {
   };
 
   return (
-    <div>
+    <div className="container">
+      {/* Header responsive */}
       <div className="password-list-header">
         <div>
           <h1>Менеджер паролей</h1>
@@ -623,6 +581,7 @@ const PasswordList = () => {
           <h2>Ваши пароли</h2>
         </div>
         <div className="card-body">
+          {/* Search bar */}
           <div className="form-group">
             <input
               type="text"
@@ -634,30 +593,43 @@ const PasswordList = () => {
           </div>
 
           {loading ? (
-            <div className="text-center py-4">Загрузка...</div>
+            <div className="text-center mb-4">
+              <p>Загрузка...</p>
+            </div>
           ) : filteredPasswords.length > 0 ? (
             filteredPasswords.map((password) => (
-              <div key={password._id} className="card password-card mb-3">
+              <div key={password._id} className="password-card card">
                 <div className="card-body">
+                  {/* Password card header - responsive layout */}
                   <div className="password-card-header mb-3">
                     <div className="password-info">
                       <h3 className="password-title">{password.title}</h3>
                       <p className="password-username">{password.username}</p>
                       {password.url && (
-                        <a
-                          href={
-                            password.url.startsWith("http")
-                              ? password.url
-                              : `https://${password.url}`
-                          }
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-500 hover:underline"
-                        >
-                          {password.url}
-                        </a>
+                        <div className="mt-1">
+                          <a
+                            href={
+                              password.url.startsWith("http")
+                                ? password.url
+                                : `https://${password.url}`
+                            }
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="password-url"
+                            style={{
+                              color: "#2c9b48",
+                              textDecoration: "none",
+                              wordBreak: "break-all",
+                              fontSize: "0.875rem",
+                            }}
+                          >
+                            {password.url}
+                          </a>
+                        </div>
                       )}
                     </div>
+
+                    {/* Actions - responsive button layout */}
                     <div className="password-actions">
                       <button
                         className="btn btn-sm btn-secondary"
@@ -705,28 +677,35 @@ const PasswordList = () => {
                     </div>
                   </div>
 
-                  <div className="password-field">
+                  {/* Password field */}
+                  <div className="password-field mb-2">
                     <div className="password-field-label">Пароль:</div>
                     <div
                       className={`password-field-value ${
                         showPasswordId !== password._id ? "password-hidden" : ""
                       }`}
+                      style={{ wordBreak: "break-all" }}
                     >
                       {password.password}
                     </div>
                   </div>
 
+                  {/* Notes */}
                   {password.notes && (
-                    <div className="password-field">
+                    <div className="password-field mb-2">
                       <div className="password-field-label">Заметки:</div>
-                      <div className="password-field-value">
+                      <div
+                        className="password-field-value"
+                        style={{ wordBreak: "break-word" }}
+                      >
                         {password.notes}
                       </div>
                     </div>
                   )}
 
+                  {/* Footer info */}
                   <div className="mt-2">
-                    <small className="text-gray-500">
+                    <small style={{ color: "#6c757d", fontSize: "0.875rem" }}>
                       {password.userId === user._id
                         ? "Вы владелец"
                         : "Доступно вам"}
@@ -739,7 +718,7 @@ const PasswordList = () => {
               </div>
             ))
           ) : (
-            <div className="text-center py-4">
+            <div className="text-center mb-4">
               <p>Пароли не найдены</p>
               <button className="btn btn-primary mt-3" onClick={openAddModal}>
                 <FaPlus /> Добавить ваш первый пароль
@@ -749,7 +728,7 @@ const PasswordList = () => {
         </div>
       </div>
 
-      {/* Модальное окно добавления/редактирования пароля */}
+      {/* Модальные окна остаются без изменений */}
       {modalOpen && (
         <PasswordModal
           password={currentPassword}
@@ -758,7 +737,6 @@ const PasswordList = () => {
         />
       )}
 
-      {/* Модальное окно общего доступа */}
       {shareModalOpen && (
         <ShareModal
           password={currentPassword}
@@ -767,7 +745,6 @@ const PasswordList = () => {
         />
       )}
 
-      {/* Модальное окно подтверждения удаления */}
       {confirmModalOpen && (
         <ConfirmModal
           title="Удалить пароль"

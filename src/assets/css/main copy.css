@@ -31,9 +31,6 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
-  /* Prévenir les débordements horizontaux */
-  max-width: 100vw;
-  overflow-x: hidden;
 }
 
 /* Logo and Header */
@@ -424,12 +421,6 @@ table tr:hover {
   filter: blur(4px);
 }
 
-/* Améliorations pour les URLs longues */
-.password-url {
-  word-break: break-all !important;
-  overflow-wrap: anywhere !important;
-}
-
 /* User Management */
 .user-list-header {
   display: flex;
@@ -623,6 +614,64 @@ table tr:hover {
   display: none;
 }
 
+/* Responsive */
+@media (max-width: 992px) {
+  .sidebar {
+    width: 70px;
+    transition: var(--transition);
+  }
+
+  .sidebar-header {
+    padding: 0 0.75rem 1.5rem;
+  }
+
+  .sidebar-logo span {
+    display: none;
+  }
+
+  .sidebar-menu-item a span {
+    display: none;
+  }
+
+  .main-content {
+    margin-left: 70px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .card-header,
+  .card-body {
+    padding: 1rem;
+  }
+
+  .password-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .password-actions {
+    margin-top: 0.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .main-content {
+    padding: 1rem;
+  }
+
+  .navbar-container {
+    padding: 0 1rem;
+  }
+
+  .btn {
+    padding: 0.5rem 1rem;
+  }
+}
+
 /* Styles pour les groupes */
 .color-option {
   transition: all 0.2s ease;
@@ -651,239 +700,4 @@ table tr:hover {
   font-size: 0.75rem;
   font-weight: 500;
   margin-bottom: 4px;
-}
-
-/* =============================================================================
-   RESPONSIVE DESIGN - MEDIA QUERIES
-   ============================================================================= */
-
-/* Large screens and tablets */
-@media (max-width: 992px) {
-  .sidebar {
-    width: 70px;
-    transition: var(--transition);
-  }
-
-  .sidebar-header {
-    padding: 0 0.75rem 1.5rem;
-  }
-
-  .sidebar-logo span {
-    display: none;
-  }
-
-  .sidebar-menu-item a span {
-    display: none;
-  }
-
-  .main-content {
-    margin-left: 70px;
-  }
-
-  .container {
-    max-width: 100%;
-    padding: 1.5rem;
-  }
-}
-
-/* Tablets and medium screens */
-@media (max-width: 768px) {
-  .container {
-    padding: 1rem;
-  }
-
-  .card-header,
-  .card-body {
-    padding: 1rem;
-  }
-
-  /* Password list header responsive */
-  .password-list-header {
-    flex-direction: column;
-    gap: 1rem;
-    align-items: stretch;
-  }
-  
-  .password-list-header .btn {
-    width: 100%;
-    justify-content: center;
-  }
-
-  /* Password card header responsive */
-  .password-card-header {
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 1rem;
-  }
-
-  /* Password actions responsive - grid layout on tablets */
-  .password-actions {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.5rem;
-    width: 100%;
-    margin-top: 0.5rem;
-  }
-  
-  .password-actions .btn-danger {
-    grid-column: span 3;
-    justify-content: center;
-  }
-  
-  /* Larger touch targets on tablets */
-  .password-actions .btn {
-    padding: 0.75rem 0.5rem;
-    min-height: 2.5rem;
-    font-size: 0.875rem;
-  }
-  
-  /* Password field improvements */
-  .password-field-value {
-    word-break: break-all !important;
-    overflow-wrap: anywhere !important;
-  }
-
-  /* Navbar responsive */
-  .navbar-container {
-    padding: 0 1rem;
-  }
-
-  h1 {
-    font-size: 2rem;
-  }
-
-  .subtitle {
-    font-size: 1rem;
-  }
-}
-
-/* Smartphones */
-@media (max-width: 576px) {
-  .main-content {
-    padding: 1rem;
-  }
-
-  .navbar-container {
-    padding: 0 1rem;
-  }
-
-  .btn {
-    padding: 0.5rem 1rem;
-  }
-
-  /* Très petits écrans - layout plus compact */
-  .password-actions {
-    grid-template-columns: repeat(2, 1fr) !important;
-  }
-  
-  .password-actions .btn-danger {
-    grid-column: span 2 !important;
-  }
-  
-  /* Password fields plus compacts */
-  .password-field {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  
-  .password-field-label {
-    margin-bottom: 0.25rem;
-    min-width: auto;
-  }
-  
-  /* Card spacing adjustments */
-  .card-body {
-    padding: 0.75rem;
-  }
-  
-  .password-card .card-body {
-    padding: 0.75rem;
-  }
-
-  /* Container adjustments */
-  .container {
-    padding: 0.5rem;
-  }
-
-  /* Typography adjustments */
-  h1 {
-    font-size: 1.75rem;
-  }
-
-  .subtitle {
-    font-size: 0.875rem;
-  }
-
-  /* Modal responsive */
-  .modal {
-    margin: 1rem;
-    max-width: calc(100vw - 2rem);
-  }
-
-  .modal-header,
-  .modal-body,
-  .modal-footer {
-    padding: 1rem;
-  }
-
-  /* Form adjustments */
-  .form-group {
-    margin-bottom: 1rem;
-  }
-
-  /* Button adjustments */
-  .btn-sm {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.75rem;
-  }
-}
-
-/* Extra small screens */
-@media (max-width: 400px) {
-  .password-actions {
-    grid-template-columns: 1fr !important;
-  }
-  
-  .password-actions .btn-danger {
-    grid-column: span 1 !important;
-  }
-
-  .container {
-    padding: 0.25rem;
-  }
-
-  .card {
-    margin-bottom: 1rem;
-  }
-
-  h1 {
-    font-size: 1.5rem;
-  }
-}
-
-/* =============================================================================
-   PRINT STYLES
-   ============================================================================= */
-
-@media print {
-  .password-actions,
-  .btn,
-  .sidebar,
-  .navbar {
-    display: none !important;
-  }
-
-  .main-content {
-    margin-left: 0 !important;
-  }
-
-  .password-hidden {
-    filter: none !important;
-  }
-
-  .card {
-    break-inside: avoid;
-    box-shadow: none;
-    border: 1px solid #ccc;
-  }
 }
